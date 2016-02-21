@@ -1,0 +1,8 @@
+/* CSS declarations go here */
+
+#inputGPX {
+    outline: none;
+    width: 70em;
+    height: 30em;
+    vertical-align: top;
+}
