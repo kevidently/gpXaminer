@@ -1,18 +1,15 @@
 <head>
-    <title>pexercise</title>
+    <title>gpXaminer</title>
 </head>
 
 <body>
-    <h2>Graph GPX Data</h2> {{> dataInput}}
+    <h2>Graph GPX Data</h2> 
+    {{> dataInput}}
+<!--    {{> output}} -->
 </body>
 
+
 <template name="dataInput">
-   <button type="button">Parse</button>
-<!--
-    <form id="formGPX">
-        <textarea cols="70" rows="30" name="inputGPX" id="inputGPX" type="textarea"></textarea>
-        <br/>
-        <input name="submitGPX" id="submitGPX" value="analyze" type="submit" />
-    </form>
--->
+   <button id="startGraph" type="button">Parse</button>
+   <div id="graphs"></div>
 </template>

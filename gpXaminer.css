@@ -6,3 +6,7 @@
     height: 30em;
     vertical-align: top;
 }
+
+svg {
+    border: 2px green solid;
+}
