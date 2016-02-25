@@ -20,12 +20,14 @@ Template.dataInput.events({
 
 function makeGraph(dataset, result, type) {
 
-    var padding = 20;
+    var padding = 40;
     var width = 600;
     var height = 200;
 
     var xScale = d3.scale.linear()
-        .domain([0, type == "ElevVsTime" ? result.totalTime : result.totalDist])
+        .domain([
+            type == "ElevVsTime" ? result.tsMin : 0,
+            type == "ElevVsTime" ? result.tsMax : result.totalDist])
         .range([padding, width - padding]);
 
 
@@ -44,17 +46,52 @@ function makeGraph(dataset, result, type) {
         .enter()
         .append("line")
         .attr("x1", function (d) {
-            return xScale(type == "ElevVsTime" ? d.currentTimeVal : d.currentDistVal);
+            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
         })
         .attr("y1", function (d) {
             return yScale(d.elev);
         })
         .attr("x2", function (d) {
-            return xScale(type == "ElevVsTime" ? d.nextTimeVal : d.nextDistVal);
+            return xScale(type == "ElevVsTime" ? d.nextTime : d.nextDistVal);
         })
         .attr("y2", function (d) {
             return yScale(d.nextElev);
         })
         .attr("stroke", "blue")
         .attr("stroke-width", 2);
+
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")
+        .ticks(8)
+        .tickFormat(
+            type == "ElevVsTime" ?
+            function (d) {
+                var hms = d3.time.format("%X");
+                return hms(new Date(d));
+            } :
+            function (d) {
+                return d+"km";
+            }
+        );
+
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(5)
+        .tickFormat(function (d) {
+            return d + "m"
+        });
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (height - padding) + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + (padding) + ",0)")
+        .call(yAxis);
+
+
 }

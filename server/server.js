@@ -22,7 +22,8 @@ Meteor.methods({
             desc: '',
             locations: [],
             totalDist: 0,
-            totalTime: 0,
+            tsMax: 0,
+            tsMin: 10000000000000,
             elevMax: 0,
             elevMin: 1000000,
             elevRange: 0,
@@ -110,25 +111,25 @@ Meteor.methods({
                 trackData.totalDist += deltaDist;
                 trackData.locations[i].nextDistVal = trackData.totalDist;
 
-
-                //calculate elev deltas -- need for graphing
+                //get elev delta with next location -- need for graphing
                 trackData.locations[i].nextElev = trackData.locations[j].elev;
 
+                //get time delta with next location -- need for graphing
+                trackData.locations[i].nextTime = trackData.locations[j].timestamp;
 
-                //calculate time deltas
-                var deltaTime = trackData.locations[j].timestamp - trackData.locations[i].timestamp;
+                //find max timestamp -- for axis domain
+                if (trackData.locations[i].timestamp > trackData.tsMax) {
+                    trackData.tsMax = trackData.locations[i].timestamp;
+                }
 
-                trackData.locations[i].currentTimeVal = trackData.totalTime;
-                trackData.totalTime += deltaTime;
-                trackData.locations[i].nextTimeVal = trackData.totalTime;
-
-
+                //find min timestamp -- for axis domain
+                if (trackData.locations[i].timestamp < trackData.tsMin) {
+                    trackData.tsMin = trackData.locations[i].timestamp;
+                }
 
             }
 
-
             //check for min & max elev values
-            //unfortunately this does not look at the very last location
             if (trackData.locations[i].elev > trackData.elevMax) {
                 trackData.elevMax = trackData.locations[i].elev;
             }
@@ -137,18 +138,9 @@ Meteor.methods({
                 trackData.elevMin = trackData.locations[i].elev;
             }
 
-
-
-
-
         }
 
         trackData.elevRange = trackData.elevMax - trackData.elevMin;
-
-
-//        console.log("This track covers about " + parseFloat(trackData.totalDist * 0.621371).toFixed(2) + " miles");
-//        console.log(trackData);
-
 
         //function to calculate distance between two points
         //found here:  http://jsperf.com/haversine-salvador/27
