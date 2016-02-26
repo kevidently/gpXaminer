@@ -3,14 +3,19 @@ Meteor.startup(function () {
 });
 
 Meteor.methods({
-    parseXML: function () {
-
+    fileUpload: function (fileName, fileData) {
+        var fs = Npm.require('fs');
+        fs.writeFile(process.env.PWD + "/uploads/" + fileName, fileData);
+    },
+    parseAndOutput: function (fileData) {
+        
         //read text file from 'private' folder
         //file becomes string
-        var file = Assets.getText('Humboldt.gpx');
+        //var file = Assets.getText('Humboldt.gpx');
 
         //split file-string on new lines
-        var fileArr = file.split("\n");
+        //var fileArr = file.split("\n");
+        var fileArr = fileData.split("\n");
 
         //setup flag vars for tracking location in file
         var trkFlag = false;

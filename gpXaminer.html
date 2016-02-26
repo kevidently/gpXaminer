@@ -5,11 +5,20 @@
 <body>
     <h2>Graph GPX Data</h2> 
     {{> dataInput}}
-<!--    {{> output}} -->
 </body>
 
-
 <template name="dataInput">
-   <button id="startGraph" type="button">Parse</button>
-   <div id="graphs"></div>
+    <!--file parse   -->
+<!--    <button id="startGraph" type="button">Parse</button>-->
+
+    <!--file upload    -->
+    <input id="fileUpload" type="file" />
+    
+    <!--graph display   -->
+    <div id="graphs"></div>
 </template>
+
+
+
+
+    

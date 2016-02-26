@@ -1,16 +1,30 @@
-Template.dataInput.helpers({
-    trackData: function () {
+//Template.dataInput.helpers({
 
-    }
-});
+//});
 
 Template.dataInput.events({
-    'click #startGraph': function () {
-        Meteor.call('parseXML', function (err, result) {
+    'change #fileUpload': function (event) {
+        var fileInfo = event.currentTarget.files[0];
+        var reader = new FileReader();
 
+        reader.onload = function (event) {
+//            console.log("a");
+            Meteor.call('fileUpload', fileInfo.name, reader.result);
+//            console.log(event.target.result);
+            Meteor.call('parseAndOutput', reader.result, function (err, result) {
+                var dataset = result.locations;
+                dataset.pop(); // last location not needed for graphing
+                document.getElementById("graphs").innerHTML = "";
+                makeGraph(dataset, result, "ElevVsTime");
+                makeGraph(dataset, result, "ElevVsDist");
+            });         
+        };
+        reader.readAsText(fileInfo);
+    },
+    'click #startGraph': function () {
+        Meteor.call('parseAndOutput', function (err, result) {
             var dataset = result.locations;
             dataset.pop(); // last location not needed for graphing
-
             makeGraph(dataset, result, "ElevVsTime");
             makeGraph(dataset, result, "ElevVsDist");
         });
@@ -19,7 +33,6 @@ Template.dataInput.events({
 
 
 function makeGraph(dataset, result, type) {
-
     var padding = 40;
     var width = 600;
     var height = 200;
@@ -27,9 +40,9 @@ function makeGraph(dataset, result, type) {
     var xScale = d3.scale.linear()
         .domain([
             type == "ElevVsTime" ? result.tsMin : 0,
-            type == "ElevVsTime" ? result.tsMax : result.totalDist])
+            type == "ElevVsTime" ? result.tsMax : result.totalDist
+        ])
         .range([padding, width - padding]);
-
 
     var yScale = d3.scale.linear()
         .domain([result.elevMin, result.elevMax])
@@ -37,7 +50,7 @@ function makeGraph(dataset, result, type) {
 
     var svg = d3.select('#graphs')
         .append('svg')
-        .attr('class', type)
+        .attr('id', type)
         .attr('width', width)
         .attr('height', height);
 
@@ -71,7 +84,7 @@ function makeGraph(dataset, result, type) {
                 return hms(new Date(d));
             } :
             function (d) {
-                return d+"km";
+                return d + "km";
             }
         );
 
@@ -92,6 +105,4 @@ function makeGraph(dataset, result, type) {
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
-
-
 }
