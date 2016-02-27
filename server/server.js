@@ -8,7 +8,7 @@ Meteor.methods({
         fs.writeFile(process.env.PWD + "/uploads/" + fileName, fileData);
     },
     parseAndOutput: function (fileData) {
-        
+
         //read text file from 'private' folder
         //file becomes string
         //var file = Assets.getText('Humboldt.gpx');
@@ -17,21 +17,16 @@ Meteor.methods({
         //var fileArr = file.split("\n");
         var fileArr = fileData.split("\n");
 
-        //setup flag vars for tracking location in file
-        var trkFlag = false;
-        var trkPtFlag = false;
-
         //setup obj to store track data
         var trackData = {
             name: '',
             desc: '',
             locations: [],
             totalDist: 0,
-            tsMax: 0,
-            tsMin: 10000000000000,
-            elevMax: 0,
-            elevMin: 1000000,
-            elevRange: 0,
+            tsMax: -Infinity,
+            tsMin: Infinity,
+            elevMax: -Infinity,
+            elevMin: Infinity,
         };
 
         //go through file array content
@@ -66,19 +61,18 @@ Meteor.methods({
                     lat: trkPtCheck[1],
                     lon: trkPtCheck[2],
                 }
-                var trkPtFlag = true;
             }
 
             //check for elevation
             var eleCheck = line.match(/^<ele>(.*)<\/ele>$/);
-            if (eleCheck && trkPtFlag == true) {
+            if (eleCheck && locObj) {
                 locObj['elev'] = eleCheck[1];
             }
 
             //check for timestamp
             //the ts is ISO formatted: 2015-05-25T15:58:18.608Z
             var tsCheck = line.match(/^<time>(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)\.(\d+)Z<\/time>$/);
-            if (tsCheck && trkPtFlag == true) {
+            if (tsCheck && locObj) {
                 // 1=year, 2=month, 3=day, 4=hour, 5=min, 6=sec, 7=milsec  
                 var dateObj = new Date(tsCheck[1], tsCheck[2] - 1, tsCheck[3], tsCheck[4], tsCheck[5], tsCheck[6], tsCheck[7]);
                 locObj['timestamp'] = dateObj.getTime();
@@ -89,7 +83,6 @@ Meteor.methods({
             if (line.match(/^<\/trkpt>$/)) {
                 //push location data to array of locations
                 trackData['locations'].push(locObj);
-                var trkPtFlag = false;
             }
         }
 
@@ -122,30 +115,31 @@ Meteor.methods({
                 //get time delta with next location -- need for graphing
                 trackData.locations[i].nextTime = trackData.locations[j].timestamp;
 
-                //find max timestamp -- for axis domain
-                if (trackData.locations[i].timestamp > trackData.tsMax) {
-                    trackData.tsMax = trackData.locations[i].timestamp;
-                }
-
-                //find min timestamp -- for axis domain
-                if (trackData.locations[i].timestamp < trackData.tsMin) {
-                    trackData.tsMin = trackData.locations[i].timestamp;
-                }
-
             }
 
-            //check for min & max elev values
+            //find max timestamp -- for axis domain
+            if (trackData.locations[i].timestamp > trackData.tsMax) {
+                trackData.tsMax = trackData.locations[i].timestamp;
+            }
+
+            //find min timestamp -- for axis domain
+            if (trackData.locations[i].timestamp < trackData.tsMin) {
+                trackData.tsMin = trackData.locations[i].timestamp;
+            }
+
+            //find max elev -- for axis domain
             if (trackData.locations[i].elev > trackData.elevMax) {
                 trackData.elevMax = trackData.locations[i].elev;
             }
-
+            
+            //find min elev -- for axis domain
             if (trackData.locations[i].elev < trackData.elevMin) {
                 trackData.elevMin = trackData.locations[i].elev;
             }
 
         }
 
-        trackData.elevRange = trackData.elevMax - trackData.elevMin;
+//        trackData.elevRange = trackData.elevMax - trackData.elevMin;
 
         //function to calculate distance between two points
         //found here:  http://jsperf.com/haversine-salvador/27

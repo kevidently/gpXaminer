@@ -8,28 +8,19 @@ Template.dataInput.events({
         var reader = new FileReader();
 
         reader.onload = function (event) {
-//            console.log("a");
             Meteor.call('fileUpload', fileInfo.name, reader.result);
-//            console.log(event.target.result);
             Meteor.call('parseAndOutput', reader.result, function (err, result) {
                 var dataset = result.locations;
                 dataset.pop(); // last location not needed for graphing
                 document.getElementById("graphs").innerHTML = "";
                 makeGraph(dataset, result, "ElevVsTime");
                 makeGraph(dataset, result, "ElevVsDist");
-            });         
+            });
         };
         reader.readAsText(fileInfo);
-    },
-    'click #startGraph': function () {
-        Meteor.call('parseAndOutput', function (err, result) {
-            var dataset = result.locations;
-            dataset.pop(); // last location not needed for graphing
-            makeGraph(dataset, result, "ElevVsTime");
-            makeGraph(dataset, result, "ElevVsDist");
-        });
     }
 });
+
 
 
 function makeGraph(dataset, result, type) {
@@ -64,6 +55,14 @@ function makeGraph(dataset, result, type) {
         .attr("y1", function (d) {
             return yScale(d.elev);
         })
+        //        .attr("x2", function (d) {
+        //            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
+        //        })
+        //        .attr("y2", function (d) {
+        //            return yScale(d.elev);
+        //        })
+        //        .transition()
+        //        .duration(1000)
         .attr("x2", function (d) {
             return xScale(type == "ElevVsTime" ? d.nextTime : d.nextDistVal);
         })
@@ -72,6 +71,15 @@ function makeGraph(dataset, result, type) {
         })
         .attr("stroke", "blue")
         .attr("stroke-width", 2);
+
+    // Add the clip path.
+//    svg.append("clipPath")
+//        .attr("id", "clip")
+//        .append("rect")
+//        .attr("width", width)
+//        .attr("height", height);
+
+
 
     var xAxis = d3.svg.axis()
         .scale(xScale)
@@ -96,6 +104,20 @@ function makeGraph(dataset, result, type) {
             return d + "m"
         });
 
+    /* Add 'curtain' rectangle to hide entire graph */
+//    svg.append('rect')
+//        .attr('x', -1 * width)
+//        .attr('y', -1 * height)
+//        .attr('height', height)
+//        .attr('width', width)
+//        .style('fill', '#ffffff')
+//        .transition()
+//        .delay(750)
+//        .duration(4000)
+//        .attr('width', 0)
+//        .attr('class', 'curtain')
+//        .attr('transform', 'rotate(180)')
+
     svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + (height - padding) + ")")
@@ -105,4 +127,21 @@ function makeGraph(dataset, result, type) {
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
+
+//    var t = svg.transition()
+//        .delay(750)
+//        .duration(6000)
+//        .ease('linear')
+////        .each('end', function () {
+////            d3.select('line.guide')
+////                .transition()
+////                .style('opacity', 0)
+////                .remove()
+////        });
+//
+//    t.select('rect.curtain')
+//        .attr('width', 0);
+
+
+
 }
