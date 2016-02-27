@@ -1,7 +1,3 @@
-//Template.dataInput.helpers({
-
-//});
-
 Template.dataInput.events({
     'change #fileUpload': function (event) {
         var fileInfo = event.currentTarget.files[0];
@@ -11,22 +7,20 @@ Template.dataInput.events({
             Meteor.call('fileUpload', fileInfo.name, reader.result);
             Meteor.call('parseAndOutput', reader.result, function (err, result) {
                 var dataset = result.locations;
-                dataset.pop(); // last location not needed for graphing
-                document.getElementById("graphs").innerHTML = "";
-                makeGraph(dataset, result, "ElevVsTime");
-                makeGraph(dataset, result, "ElevVsDist");
+                dataset.pop(); // remove last loc, doesn't have "current distVal"
+                document.getElementById("charts").innerHTML = "";
+                makeChart(dataset, result, "ElevVsTime");
+                makeChart(dataset, result, "ElevVsDist");
             });
         };
         reader.readAsText(fileInfo);
     }
 });
 
-
-
-function makeGraph(dataset, result, type) {
+function makeChart(dataset, result, type) {
     var padding = 40;
     var width = 600;
-    var height = 200;
+    var height = 250;
 
     var xScale = d3.scale.linear()
         .domain([
@@ -39,48 +33,52 @@ function makeGraph(dataset, result, type) {
         .domain([result.elevMin, result.elevMax])
         .range([height - padding, padding]);
 
-    var svg = d3.select('#graphs')
-        .append('svg')
+    //create line function
+    var line = d3.svg.line()
+        .x(function (d) {
+            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
+        })
+        .y(function (d) {
+            return yScale(d.elev);
+        })
+
+    //add SVG
+    var chart = d3.select("#charts").append('svg')
         .attr('id', type)
         .attr('width', width)
         .attr('height', height);
 
-    var lines = svg.selectAll('lines')
-        .data(dataset)
-        .enter()
-        .append("line")
-        .attr("x1", function (d) {
-            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
-        })
-        .attr("y1", function (d) {
-            return yScale(d.elev);
-        })
-        //        .attr("x2", function (d) {
-        //            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
-        //        })
-        //        .attr("y2", function (d) {
-        //            return yScale(d.elev);
-        //        })
-        //        .transition()
-        //        .duration(1000)
-        .attr("x2", function (d) {
-            return xScale(type == "ElevVsTime" ? d.nextTime : d.nextDistVal);
-        })
-        .attr("y2", function (d) {
-            return yScale(d.nextElev);
-        })
+    //add the clip path
+    chart.append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    //appending path element
+    chart.append("path")
+        .attr("d", line(dataset))
         .attr("stroke", "blue")
-        .attr("stroke-width", 2);
-
-    // Add the clip path.
-//    svg.append("clipPath")
-//        .attr("id", "clip")
-//        .append("rect")
-//        .attr("width", width)
-//        .attr("height", height);
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr('clip-path', 'url(#clip)');
 
 
+    //add "curtain" rect for reveal effect
+    chart.append('rect')
+        .attr('x', padding)
+        .attr('y', 0)
+        .attr('height', height)
+        .attr('width', width)
+        .style('fill', '#ffffff')
+        .transition()
+        .delay(500)
+        .duration(5000)
+        .ease('quad')
+        .attr('x', width)
 
+
+    //create xAxis
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")
@@ -96,52 +94,24 @@ function makeGraph(dataset, result, type) {
             }
         );
 
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .ticks(5)
-        .tickFormat(function (d) {
-            return d + "m"
-        });
-
-    /* Add 'curtain' rectangle to hide entire graph */
-//    svg.append('rect')
-//        .attr('x', -1 * width)
-//        .attr('y', -1 * height)
-//        .attr('height', height)
-//        .attr('width', width)
-//        .style('fill', '#ffffff')
-//        .transition()
-//        .delay(750)
-//        .duration(4000)
-//        .attr('width', 0)
-//        .attr('class', 'curtain')
-//        .attr('transform', 'rotate(180)')
-
-    svg.append("g")
+    //add the x-axis
+    chart.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + (height - padding) + ")")
         .call(xAxis);
 
-    svg.append("g")
+    //create yAxis
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(6)
+        .tickFormat(function (d) {
+            return d + "m"
+        });
+
+    //add y-axis
+    chart.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
-
-//    var t = svg.transition()
-//        .delay(750)
-//        .duration(6000)
-//        .ease('linear')
-////        .each('end', function () {
-////            d3.select('line.guide')
-////                .transition()
-////                .style('opacity', 0)
-////                .remove()
-////        });
-//
-//    t.select('rect.curtain')
-//        .attr('width', 0);
-
-
-
 }
