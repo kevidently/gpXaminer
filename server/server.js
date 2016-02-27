@@ -9,12 +9,7 @@ Meteor.methods({
     },
     parseAndOutput: function (fileData) {
 
-        //read text file from 'private' folder
-        //file becomes string
-        //var file = Assets.getText('Humboldt.gpx');
-
-        //split file-string on new lines
-        //var fileArr = file.split("\n");
+        //split file data on new lines
         var fileArr = fileData.split("\n");
 
         //setup obj to store track data
@@ -23,6 +18,7 @@ Meteor.methods({
             desc: '',
             locations: [],
             totalDist: 0,
+            totalTime: 0,
             tsMax: -Infinity,
             tsMin: Infinity,
             elevMax: -Infinity,
@@ -35,11 +31,6 @@ Meteor.methods({
 
             //address one "line" in the file
             var line = fileArr[i];
-
-            //check if we are in "trk"
-            if (line.match(/^<trk>$/)) {
-                var trkFlag = true;
-            }
 
             //check for name of track
             var nameCheck = line.match(/^<name>(.*)<\/name>$/);
@@ -86,7 +77,6 @@ Meteor.methods({
             }
         }
 
-
         //go through array of location objects
         //calc deltas for elevation, time, and dist between locations
         for (var i = 0; i < trackData.locations.length; i++) {
@@ -96,14 +86,14 @@ Meteor.methods({
 
             if (trackData.locations[j]) { // if there's a "next" location
 
-                //calculate distance deltas
+                //distance deltas
                 //setup coordinates
-                var lat1 = trackData.locations[i].lat;
-                var lon1 = trackData.locations[i].lon;
-                var lat2 = trackData.locations[j].lat;
-                var lon2 = trackData.locations[j].lon;
-
-                var deltaDist = distBtwnPoints(lat1, lon1, lat2, lon2);
+                var deltaDist = distBtwnPoints(
+                    trackData.locations[i].lat,
+                    trackData.locations[i].lon,
+                    trackData.locations[j].lat,
+                    trackData.locations[j].lon
+                );
 
                 trackData.locations[i].currentDistVal = trackData.totalDist;
                 trackData.totalDist += deltaDist;
@@ -112,34 +102,23 @@ Meteor.methods({
                 //get elev delta with next location -- need for graphing
                 trackData.locations[i].nextElev = trackData.locations[j].elev;
 
-                //get time delta with next location -- need for graphing
-                trackData.locations[i].nextTime = trackData.locations[j].timestamp;
-
-            }
-
-            //find max timestamp -- for axis domain
-            if (trackData.locations[i].timestamp > trackData.tsMax) {
-                trackData.tsMax = trackData.locations[i].timestamp;
-            }
-
-            //find min timestamp -- for axis domain
-            if (trackData.locations[i].timestamp < trackData.tsMin) {
-                trackData.tsMin = trackData.locations[i].timestamp;
+                //get time delta with next location -- need for graphing  
+                var deltaTime = trackData.locations[j].timestamp - trackData.locations[i].timestamp;
+                trackData.locations[i].timeProgress = trackData.totalTime
+                trackData.totalTime += deltaTime;
             }
 
             //find max elev -- for axis domain
             if (trackData.locations[i].elev > trackData.elevMax) {
                 trackData.elevMax = trackData.locations[i].elev;
             }
-            
+
             //find min elev -- for axis domain
             if (trackData.locations[i].elev < trackData.elevMin) {
                 trackData.elevMin = trackData.locations[i].elev;
             }
 
         }
-
-//        trackData.elevRange = trackData.elevMax - trackData.elevMin;
 
         //function to calculate distance between two points
         //found here:  http://jsperf.com/haversine-salvador/27

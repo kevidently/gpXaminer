@@ -19,13 +19,13 @@ Template.dataInput.events({
 
 function makeChart(dataset, result, type) {
     var padding = 40;
-    var width = 600;
-    var height = 250;
+    var width = 700;
+    var height = 300;
 
     var xScale = d3.scale.linear()
         .domain([
-            type == "ElevVsTime" ? result.tsMin : 0,
-            type == "ElevVsTime" ? result.tsMax : result.totalDist
+            type == "ElevVsTime" ? 0 : 0,
+            type == "ElevVsTime" ? result.totalTime : result.totalDist
         ])
         .range([padding, width - padding]);
 
@@ -36,7 +36,7 @@ function makeChart(dataset, result, type) {
     //create line function
     var line = d3.svg.line()
         .x(function (d) {
-            return xScale(type == "ElevVsTime" ? d.timestamp : d.currentDistVal);
+            return xScale(type == "ElevVsTime" ? d.timeProgress : d.currentDistVal);
         })
         .y(function (d) {
             return yScale(d.elev);
@@ -82,12 +82,11 @@ function makeChart(dataset, result, type) {
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")
-        .ticks(8)
+        .ticks(6)
         .tickFormat(
             type == "ElevVsTime" ?
             function (d) {
-                var hms = d3.time.format("%X");
-                return hms(new Date(d));
+                return ((d/60000)/60).toFixed()+"h"
             } :
             function (d) {
                 return d + "km";

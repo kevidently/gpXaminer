@@ -1,14 +1,28 @@
 /* CSS declarations go here */
 
+/*
 #inputGPX {
     outline: none;
     width: 70em;
     height: 30em;
     vertical-align: top;
 }
+*/
+
+body {
+    text-align: center;
+    
+}
+
+#charts {
+    margin: 0 auto;
+/*    border: 2px red solid;*/
+}
 
 svg {
-    border: 2px green solid;
+/*    border: 2px green solid;*/
+    display: block;
+    margin: 0 auto;
 }
 
 .axis path,
