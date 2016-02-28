@@ -4,20 +4,39 @@ Template.dataInput.events({
         var reader = new FileReader();
 
         reader.onload = function (event) {
-            Meteor.call('fileUpload', fileInfo.name, reader.result);
-            Meteor.call('parseAndOutput', reader.result, function (err, result) {
-                var dataset = result.locations;
-                dataset.pop(); // remove last loc, doesn't have "current distVal"
-                document.getElementById("charts").innerHTML = "";
-                makeChart(dataset, result, "ElevVsTime");
-                makeChart(dataset, result, "ElevVsDist");
+            var fileContent = reader.result;
+
+            Meteor.call('fileUpload', fileContent, function (err, result) {
+                //if this content already in mongo, send the data to makeChart
+                if (result.exists == true) {
+                    var mongoData = result.jsonData;
+                    // remove last loc, doesn't have "current distVal"
+                    mongoData.locations.pop();
+                    document.getElementById("charts").innerHTML = "";
+                    makeChart(mongoData, "ElevVsTime");
+                    makeChart(mongoData, "ElevVsDist");
+                } else {
+                    //if not in mongo, needs to be parsed
+                    var hash = result.hash;
+                    var xmlData = result.xmlData;
+                    Meteor.call('parseAndOutput', xmlData, hash, function (err, result) {
+                        // remove last loc, doesn't have "current distVal"
+                        result.locations.pop();
+                        document.getElementById("charts").innerHTML = "";
+                        makeChart(result, "ElevVsTime");
+                        makeChart(result, "ElevVsDist");
+                    });
+                }
             });
+
         };
+        //this triggers the reader.onload step above
+        //we don't really do anything with it
         reader.readAsText(fileInfo);
     }
 });
 
-function makeChart(dataset, result, type) {
+function makeChart(trackObj, type) {
     var padding = 40;
     var width = 700;
     var height = 300;
@@ -25,12 +44,12 @@ function makeChart(dataset, result, type) {
     var xScale = d3.scale.linear()
         .domain([
             type == "ElevVsTime" ? 0 : 0,
-            type == "ElevVsTime" ? result.totalTime : result.totalDist
+            type == "ElevVsTime" ? trackObj.totalTime : trackObj.totalDist
         ])
         .range([padding, width - padding]);
 
     var yScale = d3.scale.linear()
-        .domain([result.elevMin, result.elevMax])
+        .domain([trackObj.elevMin, trackObj.elevMax])
         .range([height - padding, padding]);
 
     //create line function
@@ -57,7 +76,7 @@ function makeChart(dataset, result, type) {
 
     //appending path element
     chart.append("path")
-        .attr("d", line(dataset))
+        .attr("d", line(trackObj.locations))
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("fill", "none")

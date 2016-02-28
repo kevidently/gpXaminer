@@ -1,19 +1,53 @@
 Meteor.startup(function () {
-    // code to run on server at startup
+//    Tracks.remove({});
+    if (Tracks.find().count() === 0) {
+        console.log("Tracks collection is empty");
+
+    }
 });
 
 Meteor.methods({
-    fileUpload: function (fileName, fileData) {
+    fileUpload: function (fileData) {
+        var crypto = Npm.require('crypto');
+
+        function checksum(str, algorithm, encoding) {
+            return crypto
+                .createHash(algorithm || 'md5')
+                .update(str, 'utf8')
+                .digest(encoding || 'hex')
+        }
+
+        var hashedFile = checksum(fileData);
+
         var fs = Npm.require('fs');
-        fs.writeFile(process.env.PWD + "/uploads/" + fileName, fileData);
+
+        //check if this track has already been processed
+        var trackCheck = Tracks.findOne({_id: hashedFile});
+        if (trackCheck) {
+            //track exists in mongo
+            return {
+                exists: true,
+                hash: hashedFile,
+                jsonData: trackCheck
+            }
+        } else {
+            //track does not exist in mongo
+            return {
+                exists: false,
+                hash: hashedFile,
+                xmlData: fileData
+            }
+        }
+
     },
-    parseAndOutput: function (fileData) {
+    parseAndOutput: function (fileData, hash) {
 
         //split file data on new lines
         var fileArr = fileData.split("\n");
 
         //setup obj to store track data
         var trackData = {
+            _id: hash, // becomes mongo id
             name: '',
             desc: '',
             locations: [],
@@ -93,7 +127,7 @@ Meteor.methods({
                     trackData.locations[j].lat,
                     trackData.locations[j].lon
                 );
-                
+
                 //UNIT CONVERSION
                 deltaDist = deltaDist * 0.621; //Km to miles
 
@@ -106,7 +140,7 @@ Meteor.methods({
 
                 //get time delta with next location -- need for graphing  
                 var deltaTime = trackData.locations[j].timestamp - trackData.locations[i].timestamp;
-                
+
                 //UNIT CONVERSION
                 deltaTime = ((deltaTime / 60000) / 60); //Milsec to hrs
 
@@ -143,8 +177,14 @@ Meteor.methods({
             return 12742 * Math.asin(Math.sqrt(a)); // Diameter of the earth in km (2 * 6371)
         }
 
-        //send data to client
-        //        console.log(trackData);
-        return trackData;
+        //store data in mongo and return data to client
+        if (Tracks.findOne({
+                _id: hash
+            })) {
+            return trackData;
+        } else {
+            Tracks.insert(trackData);
+            return trackData;
+        }
     }
 });

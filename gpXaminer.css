@@ -1,5 +1,12 @@
 /* CSS declarations go here */
 
+/*
+was attempting to remove blue border on button
+:focus {
+    outline: none !important;
+}
+*/
+
 body {
     text-align: center;
     
