@@ -63,7 +63,6 @@ function makeChart(dataset, result, type) {
         .attr("fill", "none")
         .attr('clip-path', 'url(#clip)');
 
-
     //add "curtain" rect for reveal effect
     chart.append('rect')
         .attr('x', padding)
@@ -86,10 +85,10 @@ function makeChart(dataset, result, type) {
         .tickFormat(
             type == "ElevVsTime" ?
             function (d) {
-                return ((d/60000)/60).toFixed()+"h"
+                return d.toFixed(1) + "h"
             } :
             function (d) {
-                return d + "km";
+                return d.toFixed(1) + "mi";
             }
         );
 
@@ -105,7 +104,7 @@ function makeChart(dataset, result, type) {
         .orient("left")
         .ticks(6)
         .tickFormat(function (d) {
-            return d + "m"
+            return d + "ft";
         });
 
     //add y-axis

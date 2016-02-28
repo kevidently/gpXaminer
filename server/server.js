@@ -19,8 +19,6 @@ Meteor.methods({
             locations: [],
             totalDist: 0,
             totalTime: 0,
-            tsMax: -Infinity,
-            tsMin: Infinity,
             elevMax: -Infinity,
             elevMin: Infinity,
         };
@@ -57,7 +55,8 @@ Meteor.methods({
             //check for elevation
             var eleCheck = line.match(/^<ele>(.*)<\/ele>$/);
             if (eleCheck && locObj) {
-                locObj['elev'] = eleCheck[1];
+                //UNIT CONVERSION
+                locObj['elev'] = eleCheck[1] * 3.281; //in feet
             }
 
             //check for timestamp
@@ -94,6 +93,9 @@ Meteor.methods({
                     trackData.locations[j].lat,
                     trackData.locations[j].lon
                 );
+                
+                //UNIT CONVERSION
+                deltaDist = deltaDist * 0.621; //Km to miles
 
                 trackData.locations[i].currentDistVal = trackData.totalDist;
                 trackData.totalDist += deltaDist;
@@ -104,6 +106,10 @@ Meteor.methods({
 
                 //get time delta with next location -- need for graphing  
                 var deltaTime = trackData.locations[j].timestamp - trackData.locations[i].timestamp;
+                
+                //UNIT CONVERSION
+                deltaTime = ((deltaTime / 60000) / 60); //Milsec to hrs
+
                 trackData.locations[i].timeProgress = trackData.totalTime
                 trackData.totalTime += deltaTime;
             }
@@ -138,6 +144,7 @@ Meteor.methods({
         }
 
         //send data to client
+        //        console.log(trackData);
         return trackData;
     }
 });
