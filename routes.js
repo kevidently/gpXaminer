@@ -1,4 +1,4 @@
-//ROUTES
+//IRON ROUTER
 Router.route('/', {
     name: 'home',
     template: 'upload'
@@ -8,42 +8,29 @@ Router.route('/about');
 
 Router.route('/gallery');
 
-Router.route('/viewTrack/:_id', function () {
-    this.render('viewTrack', {
-        data: function () {
-            var track = Tracks.findOne({
-                _id: this.params._id
+Router.route('/viewTrack/:_id', {
+    name: 'viewTrack',
+    template: 'viewTrack',
+    waitOn: function () {
+        return Meteor.subscribe('tracks');
+    },
+    action: function () {
+        if (this.ready) {
+            this.render('viewTrack', {
+                data: function () {
+                    var trackId = this.params._id;
+                    var trackObj = Tracks.findOne(trackId);
+                    return trackObj;
+                }
             });
-            console.log(track);
-            if (track) {
-                return track;
-            }
         }
-    });
+    }
 });
 
-
-
-//KEEPING THIS FOR TESTING PURPOSES
-//Router.route('/viewTrack/:_id', {
-//    name: 'viewTrack',
-//    template: 'viewTrack',
-//    data: function () {
-//        var trackId = this.params._id;
-//        var track = Tracks.findOne({
-//            _id: trackId
-//        });
-//        console.log(track);
-//        
-//        return track;
-////        track.locations.pop();
-////        document.getElementById("charts").innerHTML = "";
-////        makeChart(track, "ElevVsTime");
-////        makeChart(track, "ElevVsDist");
-//    }
-//});
-
+Router.onBeforeAction("loading");
 
 Router.configure({
-    layoutTemplate: 'main'
+    layoutTemplate: 'main',
+    notFoundTemplate: 'notFound',
+    loadingTemplate: 'loading'
 });

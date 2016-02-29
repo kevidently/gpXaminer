@@ -1,35 +1,20 @@
-//KEEPING THIS FOR TESTING PURPOSES
-//Template.viewTrack.onRendered(function () {
-//    this.autorun(function () {
-//
-//        var retrievedData = Template.currentData();
-//        console.log(retrievedData);
-//
-//        // remove last loc, doesn't have "current distVal"
-//        retrievedData.locations.pop();
-//        document.getElementById("charts").innerHTML = "";
-//        makeChart(retrievedData, "ElevVsTime");
-//        makeChart(retrievedData, "ElevVsDist");
-//
-//    });
-//
-//});
 
-Template.viewTrack.helpers({
-    renderD3: function () {
-        if (this) {
-            console.log(this);
-            // remove last loc, doesn't have "current distVal"
-            this.locations.pop();
-            //        document.getElementById("charts").innerHTML = "";
-            makeChart(this, "ElevVsTime");
-            makeChart(this, "ElevVsDist");
-            //        return;
-        }
-    }
+Template.viewTrack.onRendered(function () {
+    this.autorun(function () {
+        var retrievedData = Template.currentData();
+        retrievedData.locations.pop();
+        document.getElementById("charts").innerHTML = "";
+        makeChart(retrievedData, "ElevVsTime");
+        makeChart(retrievedData, "ElevVsDist");
+    });
 
-})
+});
 
+Template.gallery.helpers ({
+   tracks: function () {
+       return Tracks.find().fetch();
+   } 
+});
 
 Template.upload.events({
     'change #fileUpload': function (event) {

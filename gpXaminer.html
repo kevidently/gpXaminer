@@ -2,29 +2,16 @@
     <title>gpXaminer</title>
 </head>
 
-<!--
-<body>
-    {{> upload}}
-</body>
--->
-
 <template name="upload">
     <h2>Upload GPX File</h2>
-
     <!--file upload    -->
-    <input id="fileUpload" type="file" accept="gpx" /> {{>charts}}
-
+    <input id="fileUpload" type="file" accept="gpx" />
+    {{>charts}}
 </template>
-
-<template name="share">
-    <h2>Graph GPX Data</h2> {{>charts}}
-</template>
-
 
 <template name="charts">
     <!--graph display   -->
     <div id="charts"></div>
-<!--    {{>scriptChart}}-->
 </template>
 
 
@@ -32,17 +19,17 @@
     <p>About</p>
 </template>
 
-
 <template name="viewTrack">
-    <p>View Track</p>
+    <p>Viewing Track for "{{name}}"</p>
     {{>charts}}
-    {{renderD3}}
-<!--    {{>getTrack}}-->
 </template>
-
 
 <template name="gallery">
     <p>Gallery</p>
+    {{#each tracks}}
+        <a href="viewTrack/{{this._id}}">View track "{{this.name}}"</a>
+        <br/>
+    {{/each}}
 </template>
 
 <template name="navigation">
@@ -53,16 +40,15 @@
     </ul>
 </template>
 
-
 <template name="main">
     <h1>gpXaminer</h1> {{> navigation}}
     <hr /> {{> yield}}
-
 </template>
 
+<template name="loading">
+    <p>Loading...</p>
+</template>
 
-<!--
-<template name="scriptChart">
-    <script>
-    </script>
-</template>-->
+<template name="notFound">
+    <p>Sorry couldn't find that page</p>
+</template>

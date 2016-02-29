@@ -5,6 +5,10 @@ Meteor.startup(function () {
     }
 });
 
+Meteor.publish('tracks', function() {
+  return Tracks.find(); 
+});
+
 Meteor.methods({
     fileUpload: function (fileData) {
         var crypto = Npm.require('crypto');
@@ -17,8 +21,6 @@ Meteor.methods({
         }
 
         var hashedFile = checksum(fileData);
-
-        var fs = Npm.require('fs');
 
         //check if this track has already been processed
         var trackCheck = Tracks.findOne({_id: hashedFile});
