@@ -1,4 +1,3 @@
-
 Template.viewTrack.onRendered(function () {
     this.autorun(function () {
         var retrievedData = Template.currentData();
@@ -10,10 +9,10 @@ Template.viewTrack.onRendered(function () {
 
 });
 
-Template.gallery.helpers ({
-   tracks: function () {
-       return Tracks.find().fetch();
-   } 
+Template.gallery.helpers({
+    tracks: function () {
+        return Tracks.find().fetch();
+    }
 });
 
 Template.upload.events({
@@ -129,7 +128,7 @@ function makeChart(trackObj, type) {
             }
         );
 
-    //add the x-axis
+    //add x-axis
     chart.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + (height - padding) + ")")
@@ -149,4 +148,49 @@ function makeChart(trackObj, type) {
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
+
+
+    //BEGIN SVG--PNG TRANSFORMATION
+    //only run this using elevation vs distance
+    if (type == "ElevVsDist") {
+
+        d3.select("#ElevVsDist")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+
+        d3.select("#charts").append('canvas')
+            .attr("id", "pngoutput")
+            .attr("width", width)
+            .attr("height", height)
+
+        //cherry picking parts of svg we want for img output
+        var svgData = d3.select("#ElevVsDist").node().outerHTML;
+        var svgTag = svgData.match(/<svg[^>]*>/);
+        var pathTag = svgData.match(/<path d=[^>]*><\/path>/);
+
+        //final svgdata to feed into b64 and canvas
+        var svgForImg = svgTag + pathTag + "</svg>"
+        
+        //base64 encode into an svg+xml img
+        var svg_xml_img_src = 'data:image/svg+xml;base64,' + btoa(svgForImg);
+
+        var canvas = document.querySelector("#pngoutput"),
+            context = canvas.getContext("2d");
+
+        //create new img for canvas
+        var image = new Image;
+        image.src = svg_xml_img_src;
+        image.onload = function () {
+            context.drawImage(image, 0, 0);
+            
+            //encode img data as png
+            var canvasdata = canvas.toDataURL("image/png");
+
+            //send this to server where it will get stored in mongo if necessary
+            Meteor.call('storeImgData', canvasdata, trackObj._id);
+
+        };
+
+
+    }
 }

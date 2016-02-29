@@ -1,12 +1,13 @@
 Meteor.startup(function () {
-//    Tracks.remove({});
+    //    Tracks.remove({});
     if (Tracks.find().count() === 0) {
         console.log("Tracks collection is empty");
     }
 });
 
-Meteor.publish('tracks', function() {
-  return Tracks.find(); 
+//needed for routing
+Meteor.publish('tracks', function () {
+    return Tracks.find();
 });
 
 Meteor.methods({
@@ -23,7 +24,9 @@ Meteor.methods({
         var hashedFile = checksum(fileData);
 
         //check if this track has already been processed
-        var trackCheck = Tracks.findOne({_id: hashedFile});
+        var trackCheck = Tracks.findOne({
+            _id: hashedFile
+        });
         if (trackCheck) {
             //track exists in mongo
             return {
@@ -39,7 +42,16 @@ Meteor.methods({
                 xmlData: fileData
             }
         }
-
+    },
+    storeImgData: function (imgTag, trackId) {
+        var trackData = Tracks.findOne({
+                _id: trackId
+            })
+        if (!trackData.imgTag) {
+            Tracks.update(
+               { _id: trackId }, {$set: {imgTag: imgTag}}
+            );
+        }
     },
     parseAndOutput: function (fileData, hash) {
 

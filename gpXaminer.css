@@ -8,8 +8,27 @@ was attempting to remove blue border on button
 */
 
 body {
-    text-align: center;
-    
+    text-align: center;   
+}
+
+.galleryImg {
+    width: 300px;
+}
+
+.galleryImgContainer {
+    float: left;
+}
+
+#galleryImgHolder {
+    margin: 0 auto;
+    width: 610px;
+    height: 100vh;
+/*    border: 1px solid red;*/
+
+}
+
+#pngoutput {
+    display: none;
 }
 
 ul {

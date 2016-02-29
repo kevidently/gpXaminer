@@ -26,10 +26,16 @@
 
 <template name="gallery">
     <p>Gallery</p>
-    {{#each tracks}}
-        <a href="viewTrack/{{this._id}}">View track "{{this.name}}"</a>
-        <br/>
-    {{/each}}
+    <div id="galleryImgHolder">
+        {{#each tracks}}
+               <div class="galleryImgContainer">
+                   <p>View track "{{this.name}}"</p>
+                   <a href="viewTrack/{{this._id}}">
+                        <img class="galleryImg" src="{{this.imgTag}}">
+                   </a>    
+               </div>
+        {{/each}}
+    </div>
 </template>
 
 <template name="navigation">
