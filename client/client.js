@@ -1,3 +1,4 @@
+//KEEPING THIS FOR TESTING PURPOSES
 //Template.viewTrack.onRendered(function () {
 //    this.autorun(function () {
 //
