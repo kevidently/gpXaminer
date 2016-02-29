@@ -2,15 +2,67 @@
     <title>gpXaminer</title>
 </head>
 
+<!--
 <body>
-    <h2>Graph GPX Data</h2> 
-    {{> dataInput}}
+    {{> upload}}
 </body>
+-->
 
-<template name="dataInput">
+<template name="upload">
+    <h2>Upload GPX File</h2>
+
     <!--file upload    -->
-    <input id="fileUpload" type="file" accept="gpx"/>
-    
+    <input id="fileUpload" type="file" accept="gpx" /> {{>charts}}
+
+</template>
+
+<template name="share">
+    <h2>Graph GPX Data</h2> {{>charts}}
+</template>
+
+
+<template name="charts">
     <!--graph display   -->
     <div id="charts"></div>
+<!--    {{>scriptChart}}-->
 </template>
+
+
+<template name="about">
+    <p>About</p>
+</template>
+
+
+<template name="viewTrack">
+    <p>View Track</p>
+    {{>charts}}
+    {{renderD3}}
+<!--    {{>getTrack}}-->
+</template>
+
+
+<template name="gallery">
+    <p>Gallery</p>
+</template>
+
+<template name="navigation">
+    <ul>
+        <li class="li_nav"><a href="{{pathFor route='home'}}">Upload</a></li>
+        <li class="li_nav"><a href="{{pathFor route='about'}}">About</a></li>
+        <li class="li_nav"><a href="{{pathFor route='gallery'}}">Gallery</a></li>
+    </ul>
+</template>
+
+
+<template name="main">
+    <h1>gpXaminer</h1> {{> navigation}}
+    <hr /> {{> yield}}
+
+</template>
+
+
+<!--
+<template name="scriptChart">
+    <script>
+    </script>
+</template>-->

@@ -12,6 +12,16 @@ body {
     
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.li_nav {
+    display: inline;
+}
+
+
 #charts {
     margin: 0 auto;
 }
