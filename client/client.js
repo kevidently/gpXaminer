@@ -6,7 +6,21 @@ Template.viewTrack.onRendered(function () {
         makeChart(retrievedData, "ElevVsTime");
         makeChart(retrievedData, "ElevVsDist");
     });
+    //hard-coding this value, route name is not gallery but need to use something
+    updateNav('gallery');
+});
 
+//using several of these template onrendered's to update navbar links
+Template.gallery.onRendered(function () {
+    updateNav(Router.current().route.getName());
+});
+
+Template.upload.onRendered(function () {
+    updateNav(Router.current().route.getName());
+});
+
+Template.about.onRendered(function () {
+    updateNav(Router.current().route.getName());
 });
 
 Template.gallery.helpers({
@@ -16,6 +30,15 @@ Template.gallery.helpers({
 });
 
 Template.upload.events({
+    'mousedown #uploadBtnHolder': function (event) {
+        $('#uploadBtnUp').css('visibility', 'hidden');
+    },
+    'mouseup #uploadBtnHolder': function (event) {
+        //        setTimeout("$('#fileUpload').trigger('click')", 500);
+        $('#uploadBtnUp').css('visibility', 'visible');
+        $('#fileUpload').trigger('click');
+
+    },
     'change #fileUpload': function (event) {
         var fileInfo = event.currentTarget.files[0];
         var reader = new FileReader();
@@ -53,6 +76,17 @@ Template.upload.events({
     }
 });
 
+
+//Update borders on nav links
+function updateNav(routeName) {
+    $('.a_nav').css('border', '0px');
+    $('#nav_' + routeName).css('border-top', '1px solid black');
+    $('#nav_' + routeName).css('border-bottom', '1px solid black');
+    //    }
+}
+
+
+//Render the line charts
 function makeChart(trackObj, type) {
     var padding = 40;
     var width = 700;
@@ -170,7 +204,7 @@ function makeChart(trackObj, type) {
 
         //final svgdata to feed into b64 and canvas
         var svgForImg = svgTag + pathTag + "</svg>"
-        
+
         //base64 encode into an svg+xml img
         var svg_xml_img_src = 'data:image/svg+xml;base64,' + btoa(svgForImg);
 
@@ -182,7 +216,7 @@ function makeChart(trackObj, type) {
         image.src = svg_xml_img_src;
         image.onload = function () {
             context.drawImage(image, 0, 0);
-            
+
             //encode img data as png
             var canvasdata = canvas.toDataURL("image/png");
 
@@ -190,7 +224,5 @@ function makeChart(trackObj, type) {
             Meteor.call('storeImgData', canvasdata, trackObj._id);
 
         };
-
-
     }
 }

@@ -1,12 +1,18 @@
 //IRON ROUTER
 Router.route('/', {
-    name: 'home',
-    template: 'upload'
+    name: 'about',
+    template: 'about'
 });
 
-Router.route('/about');
+Router.route('/upload', {
+    name: 'upload',
+    template: 'upload'    
+});
 
-Router.route('/gallery');
+Router.route('/gallery', {
+    name: 'gallery',
+    template: 'gallery'    
+});
 
 Router.route('/viewTrack/:_id', {
     name: 'viewTrack',

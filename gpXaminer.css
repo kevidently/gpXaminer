@@ -1,14 +1,101 @@
-/* CSS declarations go here */
-
 /*
-was attempting to remove blue border on button
-:focus {
-    outline: none !important;
-}
+@import url(https://fonts.googleapis.com/css?family=Schoolbell);
+@import url(https://fonts.googleapis.com/css?family=Happy+Monkey);
+@import url(https://fonts.googleapis.com/css?family=Prosto+One);
+@import url(https://fonts.googleapis.com/css?family=Averia+Sans+Libre);
+@import url(https://fonts.googleapis.com/css?family=Rock+Salt);
+@import url(https://fonts.googleapis.com/css?family=Walter+Turncoat);
+@import url(https://fonts.googleapis.com/css?family=Sniglet);
+@import url(https://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise);
+@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
 */
 
+/*good*/
+
+@import url(https://fonts.googleapis.com/css?family=Seymour+One);
+@import url(https://fonts.googleapis.com/css?family=Finger+Paint);
+@import url(https://fonts.googleapis.com/css?family=Bowlby+One+SC);
+@import url(https://fonts.googleapis.com/css?family=Frijole);
+@import url(https://fonts.googleapis.com/css?family=Trade+Winds);
+@import url(https://fonts.googleapis.com/css?family=Neucha);
+@import url(https://fonts.googleapis.com/css?family=Shojumaru);
+
+
+html {
+    overflow-y: scroll;
+}
+
 body {
-    text-align: center;   
+    text-align: center;
+    font-family: 'Neucha', cursive;
+}
+
+#aboutContent {
+    width: 40%;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+#headerText {
+    font-family: 'Shojumaru', cursive;
+}
+
+li > a {
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 2em;
+    color: black;
+    font-family: 'Shojumaru', cursive;
+    font-size: 1.2em;
+}
+
+#hiddenFileUpload {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+
+#uploadBtnHolder {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+}
+
+#uploadBtnDwn {
+    position: relative;
+    display: block;
+    z-index: 1;
+    margin: 0;
+}
+
+#uploadBtnUp {
+    position: relative;
+    display: block;
+    transform: translateY(-100%);
+    z-index: 2;
+    margin: 0;
+}
+
+.headerTextSml,
+.headerTextLg {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -0.1em;
+}
+
+.headerTextSml {
+    font-size: 2.4em;
+}
+
+.headerTextLg {
+    font-size: 3.7em;
+}
+
+#btntxt {
+    text-align: center;
+    padding: 30px;
+    font-size: 3em;
+    line-height: 1.5;
 }
 
 .galleryImg {
@@ -23,8 +110,6 @@ body {
     margin: 0 auto;
     width: 610px;
     height: 100vh;
-/*    border: 1px solid red;*/
-
 }
 
 #pngoutput {
@@ -39,7 +124,6 @@ ul {
 .li_nav {
     display: inline;
 }
-
 
 #charts {
     margin: 0 auto;

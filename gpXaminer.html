@@ -3,20 +3,41 @@
 </head>
 
 <template name="upload">
-    <h2>Upload GPX File</h2>
-    <!--file upload    -->
-    <input id="fileUpload" type="file" accept="gpx" />
+<!--
+
+    <div id="btntxt">
+        UPLOAD<br>
+        GPX
+    </div>
+-->
+
+    <div id="uploadBtnHolder">
+        <div id="hiddenFileUpload">
+            <input type="file" id="fileUpload" accept="gpx" />
+        </div>
+        <img id="uploadBtnDwn" src="uploadBtn_DOWN.png" />
+        <img id="uploadBtnUp" src="uploadBtn_UP.png" />
+    </div>
+
     {{>charts}}
 </template>
 
 <template name="charts">
-    <!--graph display   -->
+    <!--chart display   -->
     <div id="charts"></div>
 </template>
 
 
 <template name="about">
-    <p>About</p>
+    <div id="aboutContent">
+        <p>Welcome to GPXtractor, a simple web application for visualizing GPS data.  This app is for people who want to be able to see a profile of the trail they are about to take.</p>
+         
+        <p>Many of today's GPS apps are capable of exporting data about a recorded track, usually in the form of a GPX file (basically just an XML file).  GPXtractor takes data from a GPX file and generates two separate line graphs.  The first graph displays the track data as "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
+        
+        <p>Go to the <a href="{{pathFor route='upload'}}">Upload</a> page to process your GPX file and display graphs as described above.  After your graphs have displayed, the track data will be recorded and archived on the <a href="{{pathFor route='gallery'}}">Gallery</a> page.</p>
+        
+        <p>GPXtractor was created using Meteor.js and D3.js, amongst others.  Please visit my personal <a href="http://kevidently.me">website</a> for more info about me.</p>
+    </div>
 </template>
 
 <template name="viewTrack">
@@ -25,30 +46,36 @@
 </template>
 
 <template name="gallery">
-    <p>Gallery</p>
+<!--    <p>Gallery</p>-->
     <div id="galleryImgHolder">
         {{#each tracks}}
-               <div class="galleryImgContainer">
-                   <p>View track "{{this.name}}"</p>
-                   <a href="viewTrack/{{this._id}}">
-                        <img class="galleryImg" src="{{this.imgTag}}">
-                   </a>    
-               </div>
+        <div class="galleryImgContainer">
+            <p>"{{this.name}}"</p>
+            <a href="viewTrack/{{this._id}}">
+                <img class="galleryImg" src="{{this.imgTag}}">
+            </a>
+        </div>
         {{/each}}
     </div>
 </template>
 
 <template name="navigation">
-    <ul>
-        <li class="li_nav"><a href="{{pathFor route='home'}}">Upload</a></li>
-        <li class="li_nav"><a href="{{pathFor route='about'}}">About</a></li>
-        <li class="li_nav"><a href="{{pathFor route='gallery'}}">Gallery</a></li>
+    <ul id="nav">
+        <li class="li_nav"><a class="a_nav" id="nav_about" href="{{pathFor route='about'}}">About</a></li>
+        <li class="li_nav"><a class="a_nav" id="nav_upload" href="{{pathFor route='upload'}}">Upload</a></li>
+        <li class="li_nav"><a class="a_nav" id="nav_gallery" href="{{pathFor route='gallery'}}">Gallery</a></li>
     </ul>
 </template>
 
 <template name="main">
-    <h1>gpXaminer</h1> {{> navigation}}
-    <hr /> {{> yield}}
+    <div id="headerText">
+        <span class="headerTextSml">gp</span>
+        <div class="headerTextLg">X</div>
+        <span class="headerTextSml">press</span>
+    </div>
+
+
+    {{> navigation}} {{> yield}}
 </template>
 
 <template name="loading">
