@@ -1,6 +1,6 @@
 /*
 @import url(https://fonts.googleapis.com/css?family=Schoolbell);
-@import url(https://fonts.googleapis.com/css?family=Happy+Monkey);
+
 @import url(https://fonts.googleapis.com/css?family=Prosto+One);
 @import url(https://fonts.googleapis.com/css?family=Averia+Sans+Libre);
 @import url(https://fonts.googleapis.com/css?family=Rock+Salt);
@@ -10,8 +10,10 @@
 @import url(https://fonts.googleapis.com/css?family=Indie+Flower);
 */
 
+
 /*good*/
 
+@import url(https://fonts.googleapis.com/css?family=Happy+Monkey);
 @import url(https://fonts.googleapis.com/css?family=Seymour+One);
 @import url(https://fonts.googleapis.com/css?family=Finger+Paint);
 @import url(https://fonts.googleapis.com/css?family=Bowlby+One+SC);
@@ -19,6 +21,10 @@
 @import url(https://fonts.googleapis.com/css?family=Trade+Winds);
 @import url(https://fonts.googleapis.com/css?family=Neucha);
 @import url(https://fonts.googleapis.com/css?family=Shojumaru);
+@import url(https://fonts.googleapis.com/css?family=Tenali+Ramakrishna);
+@import url(https://fonts.googleapis.com/css?family=Dekko);
+@import url(https://fonts.googleapis.com/css?family=Italiana);
+@import url(https://fonts.googleapis.com/css?family=Antic);
 
 
 html {
@@ -27,28 +33,123 @@ html {
 
 body {
     text-align: center;
-    font-family: 'Neucha', cursive;
+/*        font-family: 'Happy Monkey', cursive;*/
+    /*    font-family: 'Finger Paint', sans-serif;*/
+/*        font-family: 'Neucha', cursive;*/
+/*    font-family: 'Dekko', cursive;*/
+/*    font-family: 'Italiana', serif;*/
+    font-family: 'Antic', sans-serif;
 }
 
-#aboutContent {
-    width: 40%;
-    margin: 0 auto;
-    text-align: justify;
-}
 
+
+
+/*HEADER TEXT*/
 #headerText {
     font-family: 'Shojumaru', cursive;
 }
 
-li > a {
-    text-decoration: none;
+.headerTextSml,
+.headerTextLg {
     display: inline-block;
-    margin: 0 2em;
-    color: black;
-    font-family: 'Shojumaru', cursive;
-    font-size: 1.2em;
+    vertical-align: middle;
+    margin-left: -0.1em;
 }
 
+.headerTextSml {
+    font-size: 2.4em;
+}
+
+.headerTextLg {
+    font-size: 3.7em;
+}
+/*END HEADER TEXT*/
+
+
+
+
+/*NAV STUFF*/
+.navLink {
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+    color: black;
+    font-family: 'Shojumaru', cursive;
+    font-size: 1.3em;   
+}
+
+.navLinkHolder {
+    display: inline-block;
+    width: 11.5em;
+    margin: 0 -0.4em 0 0;
+/*    border: 1px solid red;*/
+}
+
+#navContainer {
+    margin: 1em auto 1.5em auto;
+    width: 45%;   
+}
+
+/*
+ul#nav {
+    list-style: none;
+    padding: 0;
+}
+*/
+
+/*
+.navItem {
+    display: inline-block;
+    margin: -0.2em;
+    border: 1px solid red;
+    margin: 0 2.5em;
+}
+*/
+/*END NAV STUFF*/
+
+
+
+/*ABOUT PAGE*/
+#aboutContent {
+    width: 45%;
+    margin: 0 auto;
+    text-align: justify;
+    font-size: 1.2em;
+    line-height: 1.2;
+}
+
+#aboutContent > p {
+    margin: 1em 0;
+}
+
+#codeBlock {
+    margin: 0;
+}
+
+#smallCap {
+    font-family: 'Shojumaru', cursive;
+    font-size: 0.8em;
+    position: relative;
+}
+
+#midX {
+    display: inline-block;
+    font-size: 1.6em;
+    vertical-align: -15%;
+/*    border: 1px solid red;*/
+    line-height: 0.8;
+    /*
+    position: relative;
+    top: 30%;
+*/
+    
+}
+
+/*END ABOUT PAGE*/
+
+
+
+/*UPLOAD BUTTON*/
 #hiddenFileUpload {
     width: 0px;
     height: 0px;
@@ -56,8 +157,8 @@ li > a {
 }
 
 #uploadBtnHolder {
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
     margin: 0 auto;
 }
 
@@ -76,27 +177,17 @@ li > a {
     margin: 0;
 }
 
-.headerTextSml,
-.headerTextLg {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: -0.1em;
-}
-
-.headerTextSml {
-    font-size: 2.4em;
-}
-
-.headerTextLg {
-    font-size: 3.7em;
-}
-
 #btntxt {
     text-align: center;
     padding: 30px;
     font-size: 3em;
     line-height: 1.5;
+    font-family: 'Shojumaru', cursive;
 }
+
+/*END UPLOAD BUTTON*/
+
+
 
 .galleryImg {
     width: 300px;
@@ -112,19 +203,14 @@ li > a {
     height: 100vh;
 }
 
-#pngoutput {
-    display: none;
-}
 
-ul {
-    list-style: none;
-    padding: 0;
-}
 
-.li_nav {
-    display: inline;
-}
 
+
+
+
+
+/*D3 CHART STUFF*/
 #charts {
     margin: 0 auto;
 }
@@ -145,3 +231,8 @@ svg {
     font-family: sans-serif;
     font-size: 10px;
 }
+
+#pngoutput {
+    display: none;
+}
+/*END D3 CHART STUFF*/

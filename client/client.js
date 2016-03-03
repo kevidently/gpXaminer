@@ -1,3 +1,4 @@
+//TEMPLATE ON-RENDERED FUNCTIONALITY
 Template.viewTrack.onRendered(function () {
     this.autorun(function () {
         var retrievedData = Template.currentData();
@@ -20,24 +21,37 @@ Template.upload.onRendered(function () {
 });
 
 Template.about.onRendered(function () {
+    var trackObj = Tracks.findOne('04de18e99b95ee2153f258ceea5eaa02');
+    trackObj.locations.pop();
+    document.getElementById("charts").innerHTML = "";
+    makeChart(trackObj, "ElevVsDist", 3000);
+
     updateNav(Router.current().route.getName());
 });
 
+
+
+//TEMPLATE HELPERS
 Template.gallery.helpers({
     tracks: function () {
         return Tracks.find().fetch();
     }
 });
 
+
+
+//TEMPLATE EVENTS
 Template.upload.events({
     'mousedown #uploadBtnHolder': function (event) {
         $('#uploadBtnUp').css('visibility', 'hidden');
     },
     'mouseup #uploadBtnHolder': function (event) {
-        //        setTimeout("$('#fileUpload').trigger('click')", 500);
         $('#uploadBtnUp').css('visibility', 'visible');
         $('#fileUpload').trigger('click');
-
+        //        setTimeout(function () {
+        //            $('#fileUpload').trigger('click').click();
+        ////            console.log($('#fileUpload'));
+        //        }, 0);
     },
     'change #fileUpload': function (event) {
         var fileInfo = event.currentTarget.files[0];
@@ -77,20 +91,23 @@ Template.upload.events({
 });
 
 
+
+//LOOSE FUNCTIONS
+
 //Update borders on nav links
 function updateNav(routeName) {
-    $('.a_nav').css('border', '0px');
+    $('.navLink').css('border', '0px');
     $('#nav_' + routeName).css('border-top', '1px solid black');
     $('#nav_' + routeName).css('border-bottom', '1px solid black');
-    //    }
 }
 
 
 //Render the line charts
-function makeChart(trackObj, type) {
-    var padding = 40;
-    var width = 700;
-    var height = 300;
+function makeChart(trackObj, type, rate) {
+    var padding = 45;
+//    var margin = {top: 30, right: 20, bottom: 30, left: 50}
+    var width = 640;
+    var height = 280;
 
     var xScale = d3.scale.linear()
         .domain([
@@ -101,7 +118,7 @@ function makeChart(trackObj, type) {
 
     var yScale = d3.scale.linear()
         .domain([trackObj.elevMin, trackObj.elevMax])
-        .range([height - padding, padding]);
+        .range([height - padding, (padding - 20)]);
 
     //create line function
     var line = d3.svg.line()
@@ -115,8 +132,8 @@ function makeChart(trackObj, type) {
     //add SVG
     var chart = d3.select("#charts").append('svg')
         .attr('id', type)
-        .attr('width', width)
-        .attr('height', height);
+        .attr('width', width - (padding - 5))
+        .attr('height', height - (padding - 20));
 
     //add the clip path
     chart.append("clipPath")
@@ -142,7 +159,7 @@ function makeChart(trackObj, type) {
         .style('fill', '#ffffff')
         .transition()
         .delay(500)
-        .duration(5000)
+        .duration(rate || 5000)
         .ease('quad')
         .attr('x', width)
 

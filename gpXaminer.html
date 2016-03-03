@@ -1,16 +1,28 @@
 <head>
-    <title>gpXaminer</title>
+    <title>gpXpress</title>
 </head>
 
-<template name="upload">
-<!--
 
+<template name="main">
+    <div id="headerText">
+        <span class="headerTextSml">gp</span>
+        <div class="headerTextLg">X</div>
+        <span class="headerTextSml">press</span>
+    </div>
+    {{> navigation}} {{> yield}}
+</template>
+
+
+<template name="upload">
+
+<!--    USED FOR MAKING BUTTON TEXT IN PS-->
+   <!-- 
     <div id="btntxt">
         UPLOAD<br>
         GPX
     </div>
 -->
-
+<!--                                -->
     <div id="uploadBtnHolder">
         <div id="hiddenFileUpload">
             <input type="file" id="fileUpload" accept="gpx" />
@@ -29,14 +41,27 @@
 
 
 <template name="about">
-    <div id="aboutContent">
-        <p>Welcome to GPXtractor, a simple web application for visualizing GPS data.  This app is for people who want to be able to see a profile of the trail they are about to take.</p>
-         
-        <p>Many of today's GPS apps are capable of exporting data about a recorded track, usually in the form of a GPX file (basically just an XML file).  GPXtractor takes data from a GPX file and generates two separate line graphs.  The first graph displays the track data as "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
+    {{>charts}}
+    <div id="aboutContent">       
+        <p>Welcome to <span id="smallCap">GP<span id="midX">X</span>PRESS</span>, a web application for visualizing GPS data. If you've ever wanted to view the elevation profile of a hike or a bike ride (or really any activity), this app is for you.</p>
+
+        <p>When you use a GPS app to record a "track", the app is logging datapoints about your journey. The intervals vary, but usually every 5-10 seconds the app is recording a new datapoint including: latitude, longitude, elevation, and a timestamp. The data looks like this:</p>
+
+        <pre id="codeBlock">
+&lt;trkpt lat="40.2205096" lon="-105.5437759"&gt;
+    &lt;ele&gt;2658.418&lt;/ele&gt;
+    &lt;time&gt;2016-02-27T17:24:51.674Z&lt;/time&gt;
+&lt;/trkpt&gt;
+&lt;trkpt lat="40.2205082" lon="-105.5439071"&gt;
+    &lt;ele&gt;2658.654&lt;/ele&gt;
+    &lt;time&gt;2016-02-27T17:25:04.443Z&lt;/time&gt;
+&lt;/trkpt&gt;</pre>
         
-        <p>Go to the <a href="{{pathFor route='upload'}}">Upload</a> page to process your GPX file and display graphs as described above.  After your graphs have displayed, the track data will be recorded and archived on the <a href="{{pathFor route='gallery'}}">Gallery</a> page.</p>
-        
-        <p>GPXtractor was created using Meteor.js and D3.js, amongst others.  Please visit my personal <a href="http://kevidently.me">website</a> for more info about me.</p>
+        <p>This data can usually be exported in the form of a GPX file (which is basically just an XML file). <span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
+
+        <p>Go to the <a href="{{pathFor route='upload'}}">Upload</a> page to process your GPX file and display graphs as described above. After your graphs have displayed, the track data will be recorded and archived on the <a href="{{pathFor route='gallery'}}">Gallery</a> page.</p>
+
+        <p><span id="smallCap">GP<span id="midX">X</span>PRESS</span> was created using Meteor.js and D3.js, amongst others. Please visit my personal <a href="http://kevidently.me">website</a> for more info about me.</p>
     </div>
 </template>
 
@@ -46,7 +71,6 @@
 </template>
 
 <template name="gallery">
-<!--    <p>Gallery</p>-->
     <div id="galleryImgHolder">
         {{#each tracks}}
         <div class="galleryImgContainer">
@@ -60,22 +84,17 @@
 </template>
 
 <template name="navigation">
-    <ul id="nav">
-        <li class="li_nav"><a class="a_nav" id="nav_about" href="{{pathFor route='about'}}">About</a></li>
-        <li class="li_nav"><a class="a_nav" id="nav_upload" href="{{pathFor route='upload'}}">Upload</a></li>
-        <li class="li_nav"><a class="a_nav" id="nav_gallery" href="{{pathFor route='gallery'}}">Gallery</a></li>
-    </ul>
-</template>
-
-<template name="main">
-    <div id="headerText">
-        <span class="headerTextSml">gp</span>
-        <div class="headerTextLg">X</div>
-        <span class="headerTextSml">press</span>
+    <div id="navContainer">
+        <div class="navLinkHolder">
+            <a class="navLink" id="nav_about" href="{{pathFor route='about'}}">About</a>
+        </div>
+        <div class="navLinkHolder">
+            <a class="navLink" id="nav_upload" href="{{pathFor route='upload'}}">Upload</a>
+        </div>
+        <div class="navLinkHolder">
+            <a class="navLink" id="nav_gallery" href="{{pathFor route='gallery'}}">Gallery</a>
+        </div>
     </div>
-
-
-    {{> navigation}} {{> yield}}
 </template>
 
 <template name="loading">
