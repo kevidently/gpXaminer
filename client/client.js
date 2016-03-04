@@ -44,10 +44,14 @@ Template.gallery.helpers({
 //TEMPLATE EVENTS
 Template.upload.events({
     'mousedown #uploadBtnHolder': function (event) {
-        $('#uploadBtnUp').css('visibility', 'hidden');
+        $('#uploadBtnHolder').css('transform', 'scale(.9,.9)');
+        $('#uploadBtnHolder').css('text-shadow', '0px 0px 0px black');
+        setTimeout(function () {
+            $('#uploadBtnHolder').css('transform', 'scale(1,1)');
+            $('#uploadBtnHolder').css('text-shadow', '3px 3px 2px black');
+        }, 80);        
     },
     'mouseup #uploadBtnHolder': function (event) {
-        $('#uploadBtnUp').css('visibility', 'visible');
         $('#fileUpload').trigger('click');
     },
     'change #fileUpload': function (event) {
@@ -94,8 +98,8 @@ Template.upload.events({
 //Update borders on nav links
 function updateNav(routeName) {
     $('.navLink').css('border', '0px');
-    $('#nav_' + routeName).css('border-top', '2px solid white');
-    $('#nav_' + routeName).css('border-bottom', '2px solid white');
+    $('#nav_' + routeName).css('border-top', '2px solid #fbc901');
+    $('#nav_' + routeName).css('border-bottom', '2px solid #fbc901');
 }
 
 
@@ -138,8 +142,8 @@ function makeChart(trackObj, type, rate) {
         .append("rect")
         .attr("width", width)
         .attr("height", height)
-    
-        .attr('x', padding - width)
+
+    .attr('x', padding - width)
         .attr('y', 0)
         .transition()
         .delay(500)
@@ -193,8 +197,6 @@ function makeChart(trackObj, type, rate) {
 
     //add "tooltip" line
     var ttLine = chart.append('line')
-        .attr('y1', padding - 20)
-        .attr('y2', height - padding)
         .attr("stroke", "white")
         .attr("stroke-width", 1)
         .attr('fill', 'none')
@@ -202,20 +204,13 @@ function makeChart(trackObj, type, rate) {
 
     //add marker for tooltip
     var marker = chart.append('circle')
-//        .attr('cx', 200)
-//        .attr('cy', 200)
-//        .attr('width', "10px")
-//        .attr('height', "10px")
         .attr('r', 6)
         .attr('fill', 'red')
-//        .attr("transform", "translate(-3,-3)")
         .style("visibility", "hidden");
 
     //add marker text for tooltip
     var markerText = chart.append('text')
         .attr("id", "markerText")
-        .attr("transform", "translate(10,-10)")
-//        .attr('color', "white")
         .style("visibility", "hidden");
 
 
@@ -248,10 +243,25 @@ function makeChart(trackObj, type, rate) {
                 mouseY >= padding &&
                 mouseY <= height - padding) {
 
+                //leaving this here for now
+                //experimenting with "sliding" the tooltip text left to right
+                //based on position
+                //                var mmText = mouseX - 639;
+                //                console.log(mmText);                
+                //              //Y = (mouseX - () )/(B-A) * (D-C) + C;
+
+                if (mouseX > ((width - (padding + 1)) / 2)) {
+                    var mText = "translate(-50,-20)";
+                } else {
+                    var mText = "translate(20,-20)";
+                }
+
                 //modify vert line
                 ttLine.style("visibility", "visible");
                 ttLine.attr('x1', d3.mouse(this)[0]);
                 ttLine.attr('x2', d3.mouse(this)[0]);
+                ttLine.attr('y1', yScale(trackObj.locations[index].elev));
+                ttLine.attr('y2', height - padding);
 
                 //modify the square
                 marker.style("visibility", "visible");
@@ -262,6 +272,7 @@ function makeChart(trackObj, type, rate) {
                 markerText.style("visibility", "visible");
                 markerText.attr('x', d3.mouse(this)[0]);
                 markerText.attr('y', yScale(trackObj.locations[index].elev));
+                markerText.attr("transform", mText);
                 markerText.text(trackObj.locations[index].elev.toFixed(0) + "ft");
             }
         });
