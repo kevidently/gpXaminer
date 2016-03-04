@@ -30,6 +30,7 @@ html {
 }
 
 body {
+    margin: 0;
     text-align: center;
     /*        font-family: 'Happy Monkey', cursive;*/
     /*    font-family: 'Finger Paint', sans-serif;*/
@@ -37,6 +38,25 @@ body {
     /*    font-family: 'Dekko', cursive;*/
     /*    font-family: 'Italiana', serif;*/
     font-family: 'Antic', sans-serif;
+    color: white;
+    background-image: url("crystal.jpg");
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: 0x 0px;
+}
+
+#bgFilter {
+/*    background-color: rgba(40, 59, 83, 0.5);*/
+/*    background-color: rgba(24, 41, 62, 0.3);*/
+    background-color: rgba(10, 20, 32, 0.2);
+/*    background-color: rgba(32, 44, 69, 0.35);*/
+    box-shadow: 0 0 120px 100px rgba(10, 20, 32, 0.2);
+    /*    opacity: 0.2;*/
+    width: 50%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 2em 3em;
+    border-radius: 60px;
 }
 
 
@@ -71,7 +91,7 @@ body {
     text-decoration: none;
     display: inline-block;
     margin: 0;
-    color: black;
+    color: white;
     font-family: 'Shojumaru', cursive;
     font-size: 1.3em;
 }
@@ -85,7 +105,7 @@ body {
 
 #navContainer {
     margin: 1em auto 1.5em auto;
-    width: 45%;
+    /*    width: 45%;*/
 }
 
 
@@ -113,7 +133,7 @@ ul#nav {
 /*ABOUT PAGE*/
 
 #aboutContent {
-    width: 45%;
+    /*    width: 45%;*/
     margin: 0 auto;
     text-align: justify;
     font-size: 1.2em;
@@ -144,6 +164,11 @@ ul#nav {
     position: relative;
     top: 30%;
 */
+}
+
+.aboutLink {
+    text-decoration: none;
+    color: white;
 }
 
 
@@ -206,6 +231,14 @@ ul#nav {
 
 
 /*D3 CHART STUFF*/
+
+.svgChart {
+    /*    background-color: #4b5361;*/
+    /*    background-color: white;*/
+    /*    padding: 1em;*/
+/*    border-radius: 20px;*/
+}
+
 #charts {
     margin: 0 auto;
 }
@@ -218,21 +251,25 @@ svg {
 .axis path,
 .axis line {
     fill: none;
-    stroke: black;
+    stroke: white;
     shape-rendering: crispEdges;
 }
 
 .axis text {
     font-family: sans-serif;
-    font-size: 10px;
+    font-size: 13px;
+    fill: white;
 }
 
 #markerText {
     font-family: sans-serif;
-    font-size: 10px;
+    font-size: 15px;
+    fill: white;
 }
 
 #pngoutput {
     display: none;
 }
+
+
 /*END D3 CHART STUFF*/

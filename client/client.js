@@ -94,16 +94,16 @@ Template.upload.events({
 //Update borders on nav links
 function updateNav(routeName) {
     $('.navLink').css('border', '0px');
-    $('#nav_' + routeName).css('border-top', '1px solid black');
-    $('#nav_' + routeName).css('border-bottom', '1px solid black');
+    $('#nav_' + routeName).css('border-top', '2px solid white');
+    $('#nav_' + routeName).css('border-bottom', '2px solid white');
 }
 
 
 //Render the line charts
 function makeChart(trackObj, type, rate) {
-    var padding = 45;
-    var width = 640;
-    var height = 280;
+    var padding = 50;
+    var width = 700;
+    var height = 300;
 
     var xScale = d3.scale.linear()
         .domain([
@@ -128,6 +128,7 @@ function makeChart(trackObj, type, rate) {
     //add SVG
     var chart = d3.select("#charts").append('svg')
         .attr('id', type)
+        .attr('class', "svgChart")
         .attr('width', width - (padding - 5))
         .attr('height', height - (padding - 20));
 
@@ -136,29 +137,23 @@ function makeChart(trackObj, type, rate) {
         .attr("id", "clip")
         .append("rect")
         .attr("width", width)
-        .attr("height", height);
-
-    //appending path element
-    chart.append("path")
-        .attr("d", line(trackObj.locations))
-        .attr("stroke", "blue")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr('clip-path', 'url(#clip)');
-
-    //add "curtain" rect for reveal effect
-    chart.append('rect')
-        .attr('x', padding)
+        .attr("height", height)
+    
+        .attr('x', padding - width)
         .attr('y', 0)
-        .attr('height', height)
-        .attr('width', width)
-        .style('fill', '#ffffff')
         .transition()
         .delay(500)
         .duration(rate || 5000)
         .ease('quad')
-        .attr('x', width);
+        .attr('x', padding);
 
+    //appending path element
+    chart.append("path")
+        .attr("d", line(trackObj.locations))
+        .attr("stroke", "#fbc901")
+        .attr("stroke-width", 3)
+        .attr("fill", "none")
+        .attr('clip-path', 'url(#clip)');
 
     //create xAxis
     var xAxis = d3.svg.axis()
@@ -200,24 +195,27 @@ function makeChart(trackObj, type, rate) {
     var ttLine = chart.append('line')
         .attr('y1', padding - 20)
         .attr('y2', height - padding)
-        .attr("stroke", "red")
+        .attr("stroke", "white")
         .attr("stroke-width", 1)
         .attr('fill', 'none')
         .style("visibility", "hidden");
 
     //add marker for tooltip
-    var marker = chart.append('rect')
-        .attr('width', "10px")
-        .attr('height', "10px")
-        .attr('fill', 'green')
-        .attr("transform", "translate(-5,-5)")
+    var marker = chart.append('circle')
+//        .attr('cx', 200)
+//        .attr('cy', 200)
+//        .attr('width', "10px")
+//        .attr('height', "10px")
+        .attr('r', 6)
+        .attr('fill', 'red')
+//        .attr("transform", "translate(-3,-3)")
         .style("visibility", "hidden");
 
     //add marker text for tooltip
     var markerText = chart.append('text')
         .attr("id", "markerText")
         .attr("transform", "translate(10,-10)")
-        .attr('color', "black")
+//        .attr('color', "white")
         .style("visibility", "hidden");
 
 
@@ -257,8 +255,8 @@ function makeChart(trackObj, type, rate) {
 
                 //modify the square
                 marker.style("visibility", "visible");
-                marker.attr('x', d3.mouse(this)[0]);
-                marker.attr('y', yScale(trackObj.locations[index].elev));
+                marker.attr('cx', d3.mouse(this)[0]);
+                marker.attr('cy', yScale(trackObj.locations[index].elev));
 
                 //modify the text
                 markerText.style("visibility", "visible");
