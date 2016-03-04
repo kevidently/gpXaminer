@@ -21,11 +21,12 @@ Template.upload.onRendered(function () {
 });
 
 Template.about.onRendered(function () {
-    var trackObj = Tracks.findOne('04de18e99b95ee2153f258ceea5eaa02');
-    trackObj.locations.pop();
-    document.getElementById("charts").innerHTML = "";
-    makeChart(trackObj, "ElevVsDist", 3000);
-
+    this.autorun(function () {
+        var retrievedData = Template.currentData();
+        retrievedData.locations.pop();
+        document.getElementById("charts").innerHTML = "";
+        makeChart(retrievedData, "ElevVsDist", 3000);
+    });
     updateNav(Router.current().route.getName());
 });
 
@@ -48,10 +49,6 @@ Template.upload.events({
     'mouseup #uploadBtnHolder': function (event) {
         $('#uploadBtnUp').css('visibility', 'visible');
         $('#fileUpload').trigger('click');
-        //        setTimeout(function () {
-        //            $('#fileUpload').trigger('click').click();
-        ////            console.log($('#fileUpload'));
-        //        }, 0);
     },
     'change #fileUpload': function (event) {
         var fileInfo = event.currentTarget.files[0];
@@ -105,7 +102,6 @@ function updateNav(routeName) {
 //Render the line charts
 function makeChart(trackObj, type, rate) {
     var padding = 45;
-//    var margin = {top: 30, right: 20, bottom: 30, left: 50}
     var width = 640;
     var height = 280;
 
@@ -161,7 +157,7 @@ function makeChart(trackObj, type, rate) {
         .delay(500)
         .duration(rate || 5000)
         .ease('quad')
-        .attr('x', width)
+        .attr('x', width);
 
 
     //create xAxis
@@ -172,7 +168,7 @@ function makeChart(trackObj, type, rate) {
         .tickFormat(
             type == "ElevVsTime" ?
             function (d) {
-                return d.toFixed(1) + "h"
+                return d.toFixed(1) + "h";
             } :
             function (d) {
                 return d.toFixed(1) + "mi";
@@ -199,6 +195,78 @@ function makeChart(trackObj, type, rate) {
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
+
+    //add "tooltip" line
+    var ttLine = chart.append('line')
+        .attr('y1', padding - 20)
+        .attr('y2', height - padding)
+        .attr("stroke", "red")
+        .attr("stroke-width", 1)
+        .attr('fill', 'none')
+        .style("visibility", "hidden");
+
+    //add marker for tooltip
+    var marker = chart.append('rect')
+        .attr('width', "10px")
+        .attr('height', "10px")
+        .attr('fill', 'green')
+        .attr("transform", "translate(-5,-5)")
+        .style("visibility", "hidden");
+
+    //add marker text for tooltip
+    var markerText = chart.append('text')
+        .attr("id", "markerText")
+        .attr("transform", "translate(10,-10)")
+        .attr('color', "black")
+        .style("visibility", "hidden");
+
+
+    //bisector function returns index of where something would go in array
+    //using it to lookup position in locaitns array and get y/elev value
+    var bisectXaxis = d3.bisector(function (d) {
+        return (type == "ElevVsTime" ? d.timeProgress : d.currentDistVal);
+    }).left;
+
+    //add "empty" rect for mouseover/tooltip
+    chart.append("rect")
+        .attr("fill-opacity", 0)
+        .attr("width", width)
+        .attr("height", height)
+        .on("mousemove", function () {
+
+            //convert mouse x back to trackobj number
+            var newX = xScale.invert(d3.mouse(this)[0]);
+
+            //find where "new" x is in the original array
+            var index = bisectXaxis(trackObj.locations, newX);
+
+            //set vars for mouse position
+            var mouseX = d3.mouse(this)[0];
+            var mouseY = d3.mouse(this)[1];
+
+            //establish bounds for tooltip display
+            if (mouseX >= padding &&
+                mouseX <= width - (padding + 1) &&
+                mouseY >= padding &&
+                mouseY <= height - padding) {
+
+                //modify vert line
+                ttLine.style("visibility", "visible");
+                ttLine.attr('x1', d3.mouse(this)[0]);
+                ttLine.attr('x2', d3.mouse(this)[0]);
+
+                //modify the square
+                marker.style("visibility", "visible");
+                marker.attr('x', d3.mouse(this)[0]);
+                marker.attr('y', yScale(trackObj.locations[index].elev));
+
+                //modify the text
+                markerText.style("visibility", "visible");
+                markerText.attr('x', d3.mouse(this)[0]);
+                markerText.attr('y', yScale(trackObj.locations[index].elev));
+                markerText.text(trackObj.locations[index].elev.toFixed(0) + "ft");
+            }
+        });
 
 
     //BEGIN SVG--PNG TRANSFORMATION

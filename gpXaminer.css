@@ -25,26 +25,23 @@
 @import url(https://fonts.googleapis.com/css?family=Dekko);
 @import url(https://fonts.googleapis.com/css?family=Italiana);
 @import url(https://fonts.googleapis.com/css?family=Antic);
-
-
 html {
     overflow-y: scroll;
 }
 
 body {
     text-align: center;
-/*        font-family: 'Happy Monkey', cursive;*/
+    /*        font-family: 'Happy Monkey', cursive;*/
     /*    font-family: 'Finger Paint', sans-serif;*/
-/*        font-family: 'Neucha', cursive;*/
-/*    font-family: 'Dekko', cursive;*/
-/*    font-family: 'Italiana', serif;*/
+    /*        font-family: 'Neucha', cursive;*/
+    /*    font-family: 'Dekko', cursive;*/
+    /*    font-family: 'Italiana', serif;*/
     font-family: 'Antic', sans-serif;
 }
 
 
-
-
 /*HEADER TEXT*/
+
 #headerText {
     font-family: 'Shojumaru', cursive;
 }
@@ -63,32 +60,34 @@ body {
 .headerTextLg {
     font-size: 3.7em;
 }
+
+
 /*END HEADER TEXT*/
 
 
-
-
 /*NAV STUFF*/
+
 .navLink {
     text-decoration: none;
     display: inline-block;
     margin: 0;
     color: black;
     font-family: 'Shojumaru', cursive;
-    font-size: 1.3em;   
+    font-size: 1.3em;
 }
 
 .navLinkHolder {
     display: inline-block;
     width: 11.5em;
     margin: 0 -0.4em 0 0;
-/*    border: 1px solid red;*/
+    /*    border: 1px solid red;*/
 }
 
 #navContainer {
     margin: 1em auto 1.5em auto;
-    width: 45%;   
+    width: 45%;
 }
+
 
 /*
 ul#nav {
@@ -96,6 +95,7 @@ ul#nav {
     padding: 0;
 }
 */
+
 
 /*
 .navItem {
@@ -105,11 +105,13 @@ ul#nav {
     margin: 0 2.5em;
 }
 */
+
+
 /*END NAV STUFF*/
 
 
-
 /*ABOUT PAGE*/
+
 #aboutContent {
     width: 45%;
     margin: 0 auto;
@@ -136,20 +138,20 @@ ul#nav {
     display: inline-block;
     font-size: 1.6em;
     vertical-align: -15%;
-/*    border: 1px solid red;*/
+    /*    border: 1px solid red;*/
     line-height: 0.8;
     /*
     position: relative;
     top: 30%;
 */
-    
 }
+
 
 /*END ABOUT PAGE*/
 
 
-
 /*UPLOAD BUTTON*/
+
 #hiddenFileUpload {
     width: 0px;
     height: 0px;
@@ -185,9 +187,8 @@ ul#nav {
     font-family: 'Shojumaru', cursive;
 }
 
+
 /*END UPLOAD BUTTON*/
-
-
 
 .galleryImg {
     width: 300px;
@@ -202,12 +203,6 @@ ul#nav {
     width: 610px;
     height: 100vh;
 }
-
-
-
-
-
-
 
 
 /*D3 CHART STUFF*/
@@ -228,6 +223,11 @@ svg {
 }
 
 .axis text {
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+#markerText {
     font-family: sans-serif;
     font-size: 10px;
 }

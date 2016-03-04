@@ -1,7 +1,22 @@
 //IRON ROUTER
 Router.route('/', {
     name: 'about',
-    template: 'about'
+    template: 'about',
+
+    waitOn: function () {
+        return Meteor.subscribe('tracks');
+    },
+    action: function () {
+        if (this.ready) {
+            this.render('about', {
+                data: function () {
+                    var trackId = '04de18e99b95ee2153f258ceea5eaa02';
+                    var trackObj = Tracks.findOne(trackId);
+                    return trackObj;
+                }
+            });
+        }
+    }
 });
 
 Router.route('/upload', {
