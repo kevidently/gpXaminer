@@ -55,6 +55,7 @@ Template.upload.events({
         $('#fileUpload').trigger('click');
     },
     'change #fileUpload': function (event) {
+        $('#uploadBtnHolder').css('display', 'none');
         var fileInfo = event.currentTarget.files[0];
         var reader = new FileReader();
 

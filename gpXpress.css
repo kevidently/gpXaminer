@@ -201,18 +201,38 @@ body {
 }
 /*END UPLOAD BUTTON*/
 
+.trackDescript {
+    font-size: 1.3em;
+}
+
 .galleryImg {
-    width: 300px;
+    width: 320px;
 }
 
 .galleryImgContainer {
-    float: left;
+/*    float: left;*/
+    display: inline-block;
+    border: 2px solid white;
+/*    border: 2px solid #fbc901;*/
+    border-radius: 20px;
+    margin: 8px;
+    background-color: rgba(100, 100, 100, 0.1);
+}
+
+.galleryImgContainer:hover {
+    border: 2px solid #fbc901;
+    background-color: rgba(60, 60, 60, 0.4);
+
+/*border: 2px solid white;*/
+    
 }
 
 #galleryImgHolder {
     margin: 0 auto;
-    width: 610px;
-    height: 100vh;
+/*    border: 1px solid red;*/
+    width: 100%;
+/*    width: 610px;*/
+/*    height: 100vh;*/
 }
 
 

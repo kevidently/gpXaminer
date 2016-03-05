@@ -10,7 +10,7 @@ Router.route('/', {
         if (this.ready) {
             this.render('about', {
                 data: function () {
-                    var trackId = '04de18e99b95ee2153f258ceea5eaa02';
+                    var trackId = "09edac606e4bca27c98ac957404d9b10";
                     var trackObj = Tracks.findOne(trackId);
                     return trackObj;
                 }
