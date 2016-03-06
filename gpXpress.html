@@ -3,7 +3,7 @@
 </head>
 
 
-<template name="main">
+<template name="main">       
     <div id="scroller">
        <div id="bgFilter">
             <div id="headerText">
@@ -13,21 +13,13 @@
             </div>
             {{> navigation}}
             {{> yield}}
+             <img id="bgImage" src="aPass.jpg" />
         </div>
     </div>
 </template>
 
 
 <template name="upload">
-
-<!--    USED FOR MAKING BUTTON TEXT IN PS-->
-   <!-- 
-    <div id="btntxt">
-        UPLOAD<br>
-        GPX
-    </div>
--->
-<!--                                -->
     <div id="uploadBtnHolder">
         <div id="hiddenFileUpload">
             <input type="file" id="fileUpload" accept="gpx" />
@@ -38,7 +30,31 @@
             <div>GPX</div>
         </div>
     </div>
+    
+    <div id="content"> 
+        <p class="pContent">When you use a GPS app to record a track, the app logs datapoints about your journey, usually every 5-10 seconds.  Each datapoint includes info such as latitude, longitude, elevation, and the time. The data looks like this:</p>
 
+        <div id="codeBlock">
+            &lt;trkpt lat="40.2205096" lon="-105.5437759"&gt;
+               <br/>
+                <span class="indent">&lt;ele&gt;2658.418&lt;/ele&gt;</span>
+               <br/>
+            <span class="indent">&lt;time&gt;2016-02-27T17:24:51.674Z&lt;/time&gt;</span>
+               <br/>
+            &lt;/trkpt&gt;
+               <br/>
+            &lt;trkpt lat="40.2205082" lon="-105.5439071"&gt;
+               <br/>
+                <span class="indent">&lt;ele&gt;2658.654&lt;/ele&gt;</span>
+               <br/>
+                <span class="indent">&lt;time&gt;2016-02-27T17:25:04.443Z&lt;/time&gt;</span>
+               <br/>
+            &lt;/trkpt&gt;
+        </div>
+
+        <p class="pContent">This data can usually be exported in the form of a GPX file (which is basically just an XML file). <span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
+    </div>   
+   
     {{>charts}}
 </template>
 
@@ -50,22 +66,8 @@
 
 <template name="about">
     {{>charts}}
-    <div id="aboutContent">       
+    <div id="content">       
         <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> is a web application for visualizing GPS data. If you've ever wanted to view the elevation profile of a hike or a bike ride (or really any activity), this app is for you.</p>
-
-        <p class="pContent">When you use a GPS app to record a "track", the app is logging datapoints about your journey. The intervals vary, but usually every 5-10 seconds the app is recording a new datapoint including: latitude, longitude, elevation, and a timestamp. The data looks like this:</p>
-
-        <pre id="codeBlock">
-&lt;trkpt lat="40.2205096" lon="-105.5437759"&gt;
-    &lt;ele&gt;2658.418&lt;/ele&gt;
-    &lt;time&gt;2016-02-27T17:24:51.674Z&lt;/time&gt;
-&lt;/trkpt&gt;
-&lt;trkpt lat="40.2205082" lon="-105.5439071"&gt;
-    &lt;ele&gt;2658.654&lt;/ele&gt;
-    &lt;time&gt;2016-02-27T17:25:04.443Z&lt;/time&gt;
-&lt;/trkpt&gt;</pre>
-        
-        <p class="pContent">This data can usually be exported in the form of a GPX file (which is basically just an XML file). <span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
 
         <p class="pContent">Go to the <a class="aboutLink" href="{{pathFor route='upload'}}">Upload</a> page to process your GPX file and display graphs as described above. After your graphs have displayed, the track data will be recorded and archived on the <a class="aboutLink" href="{{pathFor route='gallery'}}">Gallery</a> page.</p>
 
@@ -81,12 +83,12 @@
 <template name="gallery">
     <div id="galleryImgHolder">
         {{#each tracks}}
-        <div class="galleryImgContainer">
-            <p class="trackDescript">{{this.name}}</p>
-            <a href="viewTrack/{{this._id}}">
-                <img class="galleryImg" src="{{this.imgTag}}">
-            </a>
-        </div>
+        <a href="viewTrack/{{this._id}}">
+            <div class="galleryImgContainer">
+                <p class="trackDescript">{{this.name}}</p>
+                    <img class="galleryImg" src="{{this.imgTag}}">
+            </div>
+        </a>
         {{/each}}
     </div>
 </template>

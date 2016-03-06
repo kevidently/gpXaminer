@@ -30,6 +30,17 @@ Template.about.onRendered(function () {
     updateNav(Router.current().route.getName());
 });
 
+Template.main.onRendered(function () {
+    var bgimg = this.find('#bgImage');
+    //need to get width of bg image
+    //but issue with img not being ready
+    //so wait for onload
+    bgimg.onload = function () {
+        console.log(this.width);
+        moveBG(this.width);
+    }
+});
+
 
 
 //TEMPLATE HELPERS
@@ -49,7 +60,7 @@ Template.upload.events({
         setTimeout(function () {
             $('#uploadBtnHolder').css('transform', 'scale(1,1)');
             $('#uploadBtnHolder').css('text-shadow', '3px 3px 2px black');
-        }, 80);        
+        }, 80);
     },
     'mouseup #uploadBtnHolder': function (event) {
         $('#fileUpload').trigger('click');
@@ -101,6 +112,12 @@ function updateNav(routeName) {
     $('.navLink').css('border', '0px');
     $('#nav_' + routeName).css('border-top', '2px solid #fbc901');
     $('#nav_' + routeName).css('border-bottom', '2px solid #fbc901');
+}
+
+//Animate Background
+function moveBG(imgWidth) {
+    var subAmt = window.innerWidth - imgWidth;
+    $('#bgImage').css('transform','translateX('+subAmt+'px)');
 }
 
 
@@ -205,7 +222,7 @@ function makeChart(trackObj, type, rate) {
 
     //add marker for tooltip
     var marker = chart.append('circle')
-        .attr('r', 6)
+        .attr('r', 5)
         .attr('fill', 'red')
         .style("visibility", "hidden");
 
@@ -244,18 +261,11 @@ function makeChart(trackObj, type, rate) {
                 mouseY >= padding &&
                 mouseY <= height - padding) {
 
-                //leaving this here for now
-                //experimenting with "sliding" the tooltip text left to right
-                //based on position
-                //                var mmText = mouseX - 639;
-                //                console.log(mmText);                
-                //              //Y = (mouseX - () )/(B-A) * (D-C) + C;
-
-                if (mouseX > ((width - (padding + 1)) / 2)) {
-                    var mText = "translate(-50,-20)";
-                } else {
-                    var mText = "translate(20,-20)";
-                }
+                //position tooltip text
+                //shifted right when on left side of chart
+                //shifted left when on right side of chart
+                var mmText = ((mouseX / -12.98) + 10);
+                var mText = "translate(" + mmText + ",-20)";
 
                 //modify vert line
                 ttLine.style("visibility", "visible");
