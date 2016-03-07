@@ -32,7 +32,7 @@
         </div>
     </div>
     
-    <div id="content"> 
+    <div class="contentHolder" id="uploadContent"> 
         <p class="pContent">When you use a GPS app to record a track, the app continously logs data about your journey, such as latitude, longitude, elevation, and time. The data looks like this:</p>
 
         <div id="codeBlock">
@@ -65,7 +65,7 @@
 
 <template name="about">
     {{>charts}}
-    <div id="content">       
+    <div class="contentHolder" id="aboutContent">       
         <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> is a web application for visualizing GPS data. If you've ever wanted to view the elevation profile of a hike or a bike ride (or any activity), this app is for you.</p>
 
         <p class="pContent">Go to the <a class="contentLink" href="{{pathFor route='upload'}}">upload</a> page to generate graphs from your GPX file.  After your file has been processed, the track data will be recorded and preserved in the <a class="contentLink" href="{{pathFor route='gallery'}}">gallery</a>, where you can view additional GPX graphs.</p>

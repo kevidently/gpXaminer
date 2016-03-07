@@ -96,7 +96,7 @@ a {
 
 
 /*ABOUT PAGE*/
-#content {
+.contentHolder {
     margin: 0 auto;
     text-align: justify;
     font-size: 1.3em;
@@ -264,3 +264,18 @@ svg {
 
 
 /*END D3 CHART STUFF*/
+
+
+
+
+@media (max-width: 768px) {
+
+    #bgFilter {
+        width: 90%;
+    }
+    
+    svg {
+        width: 350px;
+    }
+}
+

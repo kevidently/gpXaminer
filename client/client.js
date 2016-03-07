@@ -1,12 +1,8 @@
 //TEMPLATE ON-RENDERED FUNCTIONALITY
 Template.viewTrack.onRendered(function () {    
     this.autorun(function () {
-        var retrievedData = Template.currentData();
-        retrievedData.locations.pop();
-        document.getElementById("charts").innerHTML = "";
-        makeChart(retrievedData, "ElevVsTime");
-        makeChart(retrievedData, "ElevVsDist");
-//        outputCharts(retrievedData, ["ElevVsTime", "ElevVsDist"]);
+        var trackData = Template.currentData();
+        outputCharts(trackData, ["ElevVsTime", "ElevVsDist"]);
     });
     //hard-coding this value, route name is not gallery but need to use something
     updateNav('gallery');
@@ -23,11 +19,8 @@ Template.upload.onRendered(function () {
 
 Template.about.onRendered(function () {
     this.autorun(function () {
-        var retrievedData = Template.currentData();
-        retrievedData.locations.pop();
-        document.getElementById("charts").innerHTML = "";
-        makeChart(retrievedData, "ElevVsDist", 3000);
-//        outputCharts(retrievedData, ["ElevVsDist",], 3000);
+        var trackData = Template.currentData();
+        outputCharts(trackData, ["ElevVsDist",], 3000);
     });
     updateNav(Router.current().route.getName());
 });
@@ -78,6 +71,7 @@ Template.upload.events({
     },
     'change #fileUpload': function (event) {
         $('#uploadBtnHolder').css('display', 'none');
+        $('#uploadContent').css('display', 'none');
         var fileInfo = event.currentTarget.files[0];
         var reader = new FileReader();
 
@@ -87,28 +81,16 @@ Template.upload.events({
             Meteor.call('fileUpload', fileContent, function (err, result) {
                 //if this content already in mongo, send the data to makeChart
                 if (result.exists == true) {
-                    var mongoData = result.jsonData;
-//                    outputCharts(result.jsonData, ["ElevVsTime", "ElevVsDist"]);                
-                    // remove last loc, doesn't have "current distVal"
-                    mongoData.locations.pop();
-                    document.getElementById("charts").innerHTML = "";
-                    makeChart(mongoData, "ElevVsTime");
-                    makeChart(mongoData, "ElevVsDist");
+                    Router.go('/viewTrack/'+result.hash);
                 } else {
                     //if not in mongo, needs to be parsed
                     var hash = result.hash;
                     var xmlData = result.xmlData;
                     Meteor.call('parseAndOutput', xmlData, hash, function (err, result) {
-                        // remove last loc, doesn't have "current distVal"
-                        result.locations.pop();
-                        document.getElementById("charts").innerHTML = "";
-                        makeChart(result, "ElevVsTime");
-                        makeChart(result, "ElevVsDist");
-//                        outputCharts(result, ["ElevVsTime", "ElevVsDist"]);
+                        Router.go('/viewTrack/'+result._id);
                     });
                 }
             });
-
         };
         //this triggers the reader.onload step above
         //we don't really do anything with it
@@ -127,19 +109,12 @@ function updateNav(routeName) {
     $('#nav_' + routeName).css('border-bottom', '2px solid #fbc901');
 }
 
-//Make Chart Wrapper
+//Wrapper for "Make Chart"
 function outputCharts (trackObj, types, duration) {
     // remove last loc, doesn't have "current distVal"
     trackObj.locations.pop();
     document.getElementById("charts").innerHTML = "";
     for (var i in types) {
         duration ? makeChart(trackObj, types[i], duration) : makeChart(trackObj, types[i])
-        
-//        if (duration) {
-//            makeChart(trackObj, types[i], duration);
-//        } else {
-//            makeChart(trackObj, types[i]);    
-//        }
     }
 }
-
