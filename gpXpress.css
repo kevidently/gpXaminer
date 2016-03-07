@@ -195,11 +195,11 @@ a {
 }
 
 .codeTag {
-    color: #fdeeb1;
+    color: #fbe996;
 }
 
 .codeAttr {
-    color: #fdcf77;
+    color: #f4b74c;
 }
 
 .indent {
@@ -286,7 +286,9 @@ svg {
 
 /*END D3 CHART STUFF*/
 
-@media (max-width: 1200px) {
+
+/*screen and */
+@media screen and (min-width: 769px) and (max-width: 1200px) {
     .axis text {
         font-size: 11px;
     }
@@ -321,7 +323,9 @@ svg {
 
 }
 
-@media (max-width: 768px) {
+/*screen and */
+
+@media screen and (max-width: 768px) {
     .axis text {
         font-size: 9px;
     }
