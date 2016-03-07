@@ -1,12 +1,24 @@
 @import url(https://fonts.googleapis.com/css?family=Shojumaru);
-@import url(https://fonts.googleapis.com/css?family=Antic);
+/*@import url(https://fonts.googleapis.com/css?family=Antic);*/
+@import url(https://fonts.googleapis.com/css?family=Delius);
 
 body {
     overflow-x: hidden;
     margin: 0;
     text-align: center;
-    font-family: 'Antic', sans-serif;
+    font-family: 'Delius', cursive;
     text-shadow: 3px 3px 2px black;
+    color: white;
+}
+
+#scroller {
+    overflow-y: scroll;
+    width: 100vw;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
     color: white;
 }
 
@@ -17,14 +29,7 @@ body {
     z-index: -1;
     top: 0;
     left: 0;
-    transition: all 120s ease;
-}
-
-#scroller {
-    overflow-y: scroll;
-    
-    width: 100vw;
-    height: 100vh;
+    transition: all 120s linear;
 }
 
 #bgFilter {
@@ -62,10 +67,6 @@ body {
 
 /*NAV STUFF*/
 .navLink {
-/*
-    text-decoration: none;
-    color: white;
-*/
     display: inline-block;
     margin: 0;
     font-family: 'Shojumaru', cursive;
@@ -74,21 +75,17 @@ body {
 }
 
 .navLink:hover {
-/*    border: 2px solid blue;*/
     background-color: rgba(251, 201, 1, 0.15);
-/*    border-radius: 3px;*/
 }
 
 .navLinkHolder {
     display: inline-block;
     width: 11.5em;
     margin: 0 -0.4em 0 0;
-    /*    border: 1px solid red;*/
 }
 
 #navContainer {
     margin: 1em auto 1.5em auto;
-    /*    width: 45%;*/
 }
 /*END NAV STUFF*/
 
@@ -123,11 +120,13 @@ body {
     line-height: 0.8;
 }
 
-a {
-    text-decoration: none;
-    color: white;
+.contentLink {
+    border-bottom: 2px solid #fbc901;
 }
 
+.contentLink:hover {
+    background-color: rgba(251, 201, 1, 0.15);
+}
 
 /*END ABOUT PAGE*/
 
@@ -178,8 +177,8 @@ a {
     margin: 0;
     padding: 0.5em 0.5em 0.5em 0.7em;
     border-radius: 20px;
-    background-color: rgba(251, 201, 1, 0.1); 
-/*    background-color: rgba(1, 24, 58, 0.3);*/
+    background-color: rgba(20, 20, 20, 0.15);
+    box-shadow: 0 0 20px 20px rgba(30, 30, 30, 0.15);    
 }
 
 .indent {
@@ -199,29 +198,22 @@ a {
 }
 
 .galleryImgContainer {
-/*    float: left;*/
     display: inline-block;
     border: 2px solid white;
-/*    border: 2px solid #fbc901;*/
     border-radius: 20px;
     margin: 8px;
-    background-color: rgba(100, 100, 100, 0.1);
+    background-color: rgba(80, 80, 80, 0.15);
 }
 
 .galleryImgContainer:hover {
     border: 2px solid #fbc901;
-    background-color: rgba(60, 60, 60, 0.4);
-
-/*border: 2px solid white;*/
+    background-color: rgba(40, 40, 40, 0.3);
     
 }
 
 #galleryImgHolder {
     margin: 0 auto;
-/*    border: 1px solid red;*/
     width: 100%;
-/*    width: 610px;*/
-/*    height: 100vh;*/
 }
 /*END GALLERY PAGE*/
 
@@ -248,6 +240,12 @@ svg {
     font-family: sans-serif;
     font-size: 13px;
     fill: white;
+}
+
+.chartDescription {
+    font-family: sans-serif;
+    font-size: 15px;
+    fill: white;   
 }
 
 #markerText {

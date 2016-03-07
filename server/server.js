@@ -11,7 +11,15 @@ Meteor.publish('tracks', function () {
 });
 
 Meteor.methods({
+    randBGImg: function () {
+        var fs = Npm.require('fs');
+        var dirFiles = fs.readdirSync(process.env.PWD+'/.meteor/local/build/programs/web.browser/app/bgImgs/');
+        var rand = Math.floor(Math.random()*dirFiles.length);
+        return dirFiles[rand];
+    },
     fileUpload: function (fileData) {
+        
+        //create md5 checksum of file
         var crypto = Npm.require('crypto');
 
         function checksum(str, algorithm, encoding) {
