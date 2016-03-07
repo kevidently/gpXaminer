@@ -146,7 +146,7 @@ function makeChart(trackObj, type, timeAmt) {
             //establish bounds for tooltip display
             if (mouseX >= padding &&
                 mouseX <= width - (padding + 1) &&
-                mouseY >= padding &&
+                mouseY >= padding - 15 &&
                 mouseY <= height - padding) {
 
                 //position tooltip text

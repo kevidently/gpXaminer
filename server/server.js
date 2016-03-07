@@ -12,8 +12,11 @@ Meteor.publish('tracks', function () {
 
 Meteor.methods({
     randBGImg: function () {
+        //generate a random bg image
         var fs = Npm.require('fs');
-        var dirFiles = fs.readdirSync(process.env.PWD+'/.meteor/local/build/programs/web.browser/app/bgImgs/');
+        var meteorRoot = fs.realpathSync( process.cwd() + '/../' );
+        var publicPath = meteorRoot + '/web.browser/app/';   
+        var dirFiles = fs.readdirSync(publicPath +'bgImgs/');
         var rand = Math.floor(Math.random()*dirFiles.length);
         return dirFiles[rand];
     },

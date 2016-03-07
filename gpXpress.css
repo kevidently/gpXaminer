@@ -22,6 +22,10 @@ a {
     color: white;
 }
 
+.message {
+    font-size: 2em;
+}
+
 #bgImage {
     height: 100vh;
     margin: 0;
