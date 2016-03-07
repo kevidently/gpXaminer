@@ -1,3 +1,7 @@
+//Meteor.onConnection(function(conn) {
+//    console.log(conn);
+//});
+
 Meteor.startup(function () {
 //        Tracks.remove({});
     if (Tracks.find().count() === 0) {

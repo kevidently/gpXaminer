@@ -27,6 +27,8 @@ Template.about.onRendered(function () {
 
 Template.main.onRendered(function () {
     //add random background image
+    
+//    console.log(Router.current());
 
     Meteor.call('randBGImg', function (err, result) {
         if (err) {

@@ -1,8 +1,24 @@
 //Render the line charts
 function makeChart(trackObj, type, timeAmt) {
-    var padding = 50;
-    var width = 700;
-    var height = 300;
+
+    //render graphs based on window size
+    if (window.innerWidth > 1200) {
+        var padding = 50;
+        var width = 650;
+        var height = 280;
+        var vTickNum = 7;
+    } else if (window.innerWidth > 768 && window.innerWidth <= 1200) {
+        var padding = 45;
+        var width = 500;
+        var height = 215;
+        var vTickNum = 5;
+    } else if (window.innerWidth <= 768) {
+        var padding = 40;
+        var width = 360;
+        var height = 180;
+        var vTickNum = 3;
+    }
+
 
     var xScale = d3.scale.linear()
         .domain([
@@ -73,7 +89,7 @@ function makeChart(trackObj, type, timeAmt) {
     var yAxis = d3.svg.axis()
         .scale(yScale)
         .orient("left")
-        .ticks(6)
+        .ticks(vTickNum)
         .tickFormat(function (d) {
             return d + "ft";
         });
@@ -83,23 +99,23 @@ function makeChart(trackObj, type, timeAmt) {
         .attr("class", "axis")
         .attr("transform", "translate(0," + (height - padding) + ")")
         .call(xAxis);
-    
+
     //add y-axis
     chart.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + (padding) + ",0)")
         .call(yAxis);
-    
+
     //add description text for chart
     chart.append('text')
-        .attr('class', 'chartDescription')  
+        .attr('class', 'chartDescription')
         .attr('x', (width - padding))
         .attr('y', padding - 10)
         .attr('text-anchor', 'end')
-//        .attr("transform", mText)
+        //        .attr("transform", mText)
         .text(type == "ElevVsTime" ? "Elevation Vs Time" : "Elevation Vs Distance");
-//        .style("visibility", "hidden");
-    
+    //        .style("visibility", "hidden");
+
 
     //add "tooltip" line
     var ttLine = chart.append('line')

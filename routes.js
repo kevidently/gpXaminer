@@ -7,8 +7,9 @@ Router.route('/', {
         return Meteor.subscribe('tracks');
     },
     action: function () {
+        
         if (this.ready) {
-            
+            console.log(this);
             
             
             this.render('about', {
