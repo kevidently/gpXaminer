@@ -36,21 +36,21 @@
         <p class="pContent">When you use a GPS app to record a track, the app continously logs data about your journey, such as latitude, longitude, elevation, and time. The data looks like this:</p>
 
         <div id="codeBlock">
-            &lt;trkpt lat="40.2205096" lon="-105.5437759"&gt;
+            &lt;<span class="codeTag">trkpt</span> <span class="codeAttr">lat</span>="40.2205096" <span class="codeAttr">lon</span>="-105.5437759"&gt;
                <br/>
-                <span class="indent">&lt;ele&gt;2658.418&lt;/ele&gt;</span>
+            <span class="indent">&lt;<span class="codeTag">ele</span>&gt;2658.418&lt;<span class="codeTag">/ele</span>&gt;</span>
                <br/>
-            <span class="indent">&lt;time&gt;2016-02-27T17:24:51.674Z&lt;/time&gt;</span>
+            <span class="indent">&lt;<span class="codeTag">time</span>&gt;2016-02-27T17:24:51.674Z&lt;<span class="codeTag">/time</span>&gt;</span>
                <br/>
-            &lt;/trkpt&gt;
+            &lt;<span class="codeTag">/trkpt</span>&gt;
                <br/>
-            &lt;trkpt lat="40.2205082" lon="-105.5439071"&gt;
+            &lt;<span class="codeTag">trkpt</span> <span class="codeAttr">lat</span>="40.2205082" <span class="codeAttr">lon</span>="-105.5439071"&gt;
                <br/>
-                <span class="indent">&lt;ele&gt;2658.654&lt;/ele&gt;</span>
+                <span class="indent">&lt;<span class="codeTag">ele</span>&gt;2658.654&lt;<span class="codeTag">/ele</span>&gt;</span>
                <br/>
-                <span class="indent">&lt;time&gt;2016-02-27T17:25:04.443Z&lt;/time&gt;</span>
+                <span class="indent">&lt;<span class="codeTag">time</span>&gt;2016-02-27T17:25:04.443Z&lt;<span class="codeTag">/time</span>&gt;</span>
                <br/>
-            &lt;/trkpt&gt;
+            &lt;<span class="codeTag">/trkpt</span>&gt;
         </div>
 
         <p class="pContent">Your GPS app can (usually) export this data as a GPX file (which is basically just an XML file). <span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>

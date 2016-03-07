@@ -194,6 +194,14 @@ a {
     box-shadow: 0 0 20px 20px rgba(30, 30, 30, 0.15);
 }
 
+.codeTag {
+    color: #fdeeb1;
+}
+
+.codeAttr {
+    color: #fdcf77;
+}
+
 .indent {
     position: relative;
     left: 2em;
