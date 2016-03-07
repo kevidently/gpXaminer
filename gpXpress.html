@@ -1,4 +1,5 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gpXpress</title>
 </head>
 
@@ -75,7 +76,7 @@
 </template>
 
 <template name="viewTrack">
-    <p>Viewing Track for "{{name}}"</p>
+    <p id="viewTrackDescript">Viewing Track for "{{name}}"</p>
     {{>charts}}
 </template>
 
@@ -84,7 +85,7 @@
         {{#each tracks}}
         <a href="viewTrack/{{this._id}}">
             <div class="galleryImgContainer">
-                <p class="trackDescript">{{this.name}}</p>
+                <p class="galTrackDescript">{{this.name}}</p>
                     <img class="galleryImg" src="{{this.imgTag}}">
             </div>
         </a>
@@ -107,9 +108,9 @@
 </template>
 
 <template name="loading">
-    <p class="message">Loading...</p>
+    <p class="pageStatus">Loading...</p>
 </template>
 
 <template name="notFound">
-    <p class="message">Sorry couldn't find that page</p>
+    <p class="pageStatus">Sorry couldn't find that page</p>
 </template>

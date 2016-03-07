@@ -168,8 +168,8 @@ function makeChart(trackObj, type, timeAmt) {
                 //position tooltip text
                 //shifted right when on left side of chart
                 //shifted left when on right side of chart
-                var mmText = ((mouseX / -12.98) + 10);
-                var mText = "translate(" + mmText + ",-20)";
+                var mTextCalc = ((mouseX / -12.98));
+                var mText = "translate(" + mTextCalc + ",-10)";
 
                 //modify vert line
                 ttLine.style("visibility", "visible");

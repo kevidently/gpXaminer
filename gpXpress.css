@@ -23,8 +23,8 @@ a {
     color: white;
 }
 
-.message {
-    font-size: 2em;
+.pageStatus {
+    font: 2em 'Shojumaru', cursive;;
 }
 
 #bgImage {
@@ -38,8 +38,8 @@ a {
 }
 
 #bgFilter {
+    box-shadow: 0 0 120px 120px rgba(0, 17, 37, 0.2);
     background-color: rgba(0, 17, 37, 0.2);
-    box-shadow: 0 0 120px 80px rgba(0, 17, 37, 0.2);
     width: 650px;
     min-width: 350px;
     margin: 0 auto;
@@ -192,6 +192,7 @@ a {
     border-radius: 20px;
     background-color: rgba(20, 20, 20, 0.15);
     box-shadow: 0 0 20px 20px rgba(30, 30, 30, 0.15);
+    min-width: 350px;    
 }
 
 .codeTag {
@@ -213,7 +214,12 @@ a {
 
 /*GALLERY PAGE*/
 
-.trackDescript {
+#viewTrackDescript {
+    font-size: 1.3em;
+    margin: 1.5em 0 0 0;
+}
+
+.galTrackDescript {
     font-size: 1.3em;
 }
 
@@ -251,7 +257,7 @@ a {
 
 svg {
     display: block;
-    margin: 0 auto;
+    margin: 1em auto 0 auto;
 }
 
 .axis path,
@@ -263,19 +269,13 @@ svg {
 
 .axis text {
     font-family: sans-serif;
-    font-size: 13px;
+    font-size: 0.8em;
     fill: white;
 }
 
-.chartDescription {
+.chartDescription, #markerText {
     font-family: sans-serif;
-    font-size: 15px;
-    fill: white;
-}
-
-#markerText {
-    font-family: sans-serif;
-    font-size: 15px;
+    font-size: 1.1em;
     fill: white;
 }
 
@@ -286,18 +286,19 @@ svg {
 
 /*END D3 CHART STUFF*/
 
-
-/*screen and */
-@media screen and (min-width: 769px) and (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
     .axis text {
-        font-size: 11px;
+        font-family: sans-serif;
+        font-size: 0.7em;
+        fill: white;
     }
-    .chartDescription {
-        font-size: 13px;
+
+    .chartDescription, #markerText {
+        font-family: sans-serif;
+        font-size: 1em;
+        fill: white;
     }
-    #markerText {
-        font-size: 13px;
-    }
+    
     #bgFilter {
         width: 500px;
     }
@@ -305,7 +306,7 @@ svg {
         font: 1.15em monospace;
     }
     .navLink {
-        font-size: 1em;
+        font-size: 1.2em;
     }
     .navLinkHolder {
         width: 9em;
@@ -320,23 +321,27 @@ svg {
         font: 1.5em 'Shojumaru', cursive;
     }
     
-
+    svg {
+        margin: 2.5em auto 0 auto;
+    }
 }
-
-/*screen and */
 
 @media screen and (max-width: 768px) {
     .axis text {
-        font-size: 9px;
+        font-family: sans-serif;
+        font-size: 0.6em;
+        fill: white;
     }
-    .chartDescription {
-        font-size: 11px;
+
+    .chartDescription, #markerText {
+        font-family: sans-serif;
+        font-size: 0.9em;
+        fill: white;
     }
-    #markerText {
-        font-size: 11px;
-    }
+    
     #bgFilter {
-        width: 375px;
+        width: 80%;
+        padding: 0 1em 0 1em;
     }
     #codeBlock {
         font: 1em monospace;
