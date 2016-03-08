@@ -29,13 +29,16 @@ a
     font 2em fontHeadings
 
 #bgImage
-    height 100vh
     margin 0
-    position absolute
     z-index -1
+    position absolute
+    height 100vh
     top 0
     left 0
     transition all 120s linear
+
+.notransition
+    transition none !important
 
 #bgFilter
     box-shadow 0 0 120px 120px rgba(0, 17, 37, 0.2)
@@ -74,12 +77,10 @@ a
     display inline-block
     margin 0
     font-family fontHeadings
-    font-size 1.3em
+    font-size 1.5em
     padding 0.2em
     &:hover
         background-color rgba(251, 201, 1, 0.15)
-
-//.navLink:hover
     
 .navLinkHolder
     display inline-block
@@ -87,7 +88,7 @@ a
     margin 0 -0.4em 0 0
 
 #navContainer
-    margin 1em auto 1.5em auto
+    margin 0.5em auto 1em auto
 /*END NAV STUFF*/
 
 
@@ -119,7 +120,6 @@ a
     border-bottom 2px solid #fbc901
     &:hover
         background-color rgba(251, 201, 1, 0.15)
-//.contentLink:hover
 
 /*END ABOUT PAGE*/
 
@@ -186,10 +186,11 @@ a
 /*GALLERY PAGE*/
 #viewTrackDescript
     font 1.3em fontHeadings
-    margin 1.5em 0 0 0
+    margin 1.1em 0
 
 .galTrackDescript
-    font-size 1.3em
+    font 1.2em fontHeadings
+//    font-size 1.3em
 
 .galleryImg
     width 300px
@@ -221,7 +222,7 @@ a
 
 svg
     display block
-    margin 1em auto 0 auto
+    margin 1.5em auto 0 auto
 
 .axis path, .axis line
     fill none
@@ -258,10 +259,10 @@ svg
         font 1.15em monospace
     
     .navLink
-        font-size 1.2em
+        font-size 1.4em
     
     .navLinkHolder
-        width 9em
+        width 10em
     
     #uploadBtnHolder
         width 150px
@@ -275,7 +276,7 @@ svg
     svg
         margin 2.5em auto 0 auto
 
-@media screen and (max-width: 768px)
+@media screen and (max-width: 600px)
     .axis text
         font 0.7em fontChart
         fill white
@@ -285,8 +286,8 @@ svg
         fill white
     
     #bgFilter
-        width 80%
-        padding 0 1em 0 1em
+        width 95%
+        padding 0
     
     #codeBlock
         font 1em monospace

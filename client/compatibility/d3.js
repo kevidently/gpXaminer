@@ -11,7 +11,7 @@ function makeChart(trackObj, type, timeAmt) {
         var width = 650;
         var height = 280;
         var vTickNum = 6;
-    } else if (window.innerWidth > 768 && window.innerWidth <= 1200) {
+    } else if (window.innerWidth > 600 && window.innerWidth <= 1200) {
         //        var padding = 45;
         var paddingLeft = 60;
         var paddingRight = 5;
@@ -20,7 +20,7 @@ function makeChart(trackObj, type, timeAmt) {
         var width = 500;
         var height = 250;
         var vTickNum = 4;
-    } else if (window.innerWidth <= 768) {
+    } else if (window.innerWidth <= 600) {
         //        var padding = 40;
         var paddingLeft = 45;
         var paddingRight = 5;

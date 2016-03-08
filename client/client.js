@@ -1,5 +1,5 @@
 //TEMPLATE ON-RENDERED FUNCTIONALITY
-Template.viewTrack.onRendered(function () {    
+Template.viewTrack.onRendered(function () {
     this.autorun(function () {
         var trackData = Template.currentData();
         outputCharts(trackData, ["ElevVsTime", "ElevVsDist"], 4000);
@@ -20,30 +20,29 @@ Template.upload.onRendered(function () {
 Template.about.onRendered(function () {
     this.autorun(function () {
         var trackData = Template.currentData();
-        outputCharts(trackData, ["ElevVsDist",], 3000);
+        outputCharts(trackData, ["ElevVsDist", ], 3000);
     });
     updateNav(Router.current().route.getName());
 });
 
 Template.main.onRendered(function () {
     //add random background image
-    
-//    console.log(Router.current());
 
     Meteor.call('randBGImg', function (err, result) {
         if (err) {
             console.log(err);
         }
-        
+
         //use img onload to animate
         //issue with getting width of img not being ready
         var bgimg = $('#bgImage')[0];
         bgimg.onload = function () {
+            //triggers animaion of background
             var moveAmt = window.innerWidth - this.width;
             this.style.transform = 'translateX(' + moveAmt + 'px)';
-        }
+        };
         //note, path needs to start with slash, bug in iron router?
-        bgimg.src = '/bgImgs/'+result;        
+        bgimg.src = '/bgImgs/' + result;
     });
 });
 
@@ -83,13 +82,13 @@ Template.upload.events({
             Meteor.call('fileUpload', fileContent, function (err, result) {
                 //if this content already in mongo, send the data to makeChart
                 if (result.exists == true) {
-                    Router.go('/viewTrack/'+result.hash);
+                    Router.go('/viewTrack/' + result.hash);
                 } else {
                     //if not in mongo, needs to be parsed
                     var hash = result.hash;
                     var xmlData = result.xmlData;
                     Meteor.call('parseAndOutput', xmlData, hash, function (err, result) {
-                        Router.go('/viewTrack/'+result._id);
+                        Router.go('/viewTrack/' + result._id);
                     });
                 }
             });
@@ -104,6 +103,31 @@ Template.upload.events({
 
 //LOOSE FUNCTIONS
 
+//re-animate bg image if window resize
+window.onresize = function () {
+    var bgimg = $('#bgImage')[0];
+    var moveAmt = window.innerWidth - bgimg.width;
+
+    //halt the transition
+    bgimg.className = 'notransition';
+
+    //re-position image
+    bgimg.style.top = 0;
+    bgimg.style.left = 0;
+    bgimg.style.height = '100vh';
+    bgimg.style.transform = 'translateX(0px)';
+
+    //need to trigger a 'reflow' of css changes
+    bgimg.offsetHeight; //'trigger a css reflow, flush css changes'
+
+    //allow new transition to start
+    bgimg.removeAttribute('class');
+
+    //trigger animation
+    bgimg.style.transform = 'translateX(' + moveAmt + 'px)';
+};
+
+
 //Update borders on nav links
 function updateNav(routeName) {
     $('.navLink').css('border', '0px');
@@ -112,7 +136,7 @@ function updateNav(routeName) {
 }
 
 //Wrapper for "Make Chart"
-function outputCharts (trackObj, types, duration) {
+function outputCharts(trackObj, types, duration) {
     // remove last loc, doesn't have "current distVal"
     trackObj.locations.pop();
     document.getElementById("charts").innerHTML = "";
