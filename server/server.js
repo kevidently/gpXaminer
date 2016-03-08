@@ -1,9 +1,5 @@
-//Meteor.onConnection(function(conn) {
-//    console.log(conn);
-//});
-
 Meteor.startup(function () {
-//        Tracks.remove({});
+//    Tracks.remove({});
     if (Tracks.find().count() === 0) {
         console.log("Tracks collection is empty");
     }
@@ -83,6 +79,7 @@ Meteor.methods({
             totalTime: 0,
             elevMax: -Infinity,
             elevMin: Infinity,
+            elevMaxIndex: 0
         };
 
         //go through file array content
@@ -179,6 +176,8 @@ Meteor.methods({
             //find max elev -- for axis domain
             if (trackData.locations[i].elev > trackData.elevMax) {
                 trackData.elevMax = trackData.locations[i].elev;
+                trackData.elevMaxIndex = i;
+                console.log(trackData.elevMaxIndex);
             }
 
             //find min elev -- for axis domain

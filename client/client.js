@@ -2,7 +2,7 @@
 Template.viewTrack.onRendered(function () {    
     this.autorun(function () {
         var trackData = Template.currentData();
-        outputCharts(trackData, ["ElevVsTime", "ElevVsDist"]);
+        outputCharts(trackData, ["ElevVsTime", "ElevVsDist"], 4000);
     });
     //hard-coding this value, route name is not gallery but need to use something
     updateNav('gallery');

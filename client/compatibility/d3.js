@@ -1,35 +1,54 @@
 //Render the line charts
 function makeChart(trackObj, type, timeAmt) {
 
+    //SETUP
     //render graphs based on window size
     if (window.innerWidth > 1200) {
-        var padding = 50;
+        var paddingLeft = 75;
+        var paddingRight = 5;
+        var paddingTop = 30;
+        var paddingBottom = 30;
         var width = 650;
         var height = 280;
-        var vTickNum = 7;
+        var vTickNum = 6;
     } else if (window.innerWidth > 768 && window.innerWidth <= 1200) {
-        var padding = 45;
+        //        var padding = 45;
+        var paddingLeft = 60;
+        var paddingRight = 5;
+        var paddingTop = 28;
+        var paddingBottom = 28;
         var width = 500;
-        var height = 215;
-        var vTickNum = 5;
+        var height = 250;
+        var vTickNum = 4;
     } else if (window.innerWidth <= 768) {
-        var padding = 40;
-        var width = 360;
-        var height = 180;
+        //        var padding = 40;
+        var paddingLeft = 45;
+        var paddingRight = 5;
+        var paddingTop = 25;
+        var paddingBottom = 25;
+        var width = 350;
+        var height = 200;
         var vTickNum = 3;
     }
 
+    //use this for calc pos of tool tip text
+    var ttipFactor = -1 * ((width - paddingLeft - paddingRight) / 50).toFixed(2);
+    //END SETUP
 
+
+    //RENDER GRAPHS
+
+    //setup scales for mapping data to axes
     var xScale = d3.scale.linear()
         .domain([
             type == "ElevVsTime" ? 0 : 0,
             type == "ElevVsTime" ? trackObj.totalTime : trackObj.totalDist
         ])
-        .range([padding, width - padding]);
+        .range([paddingLeft, width - paddingRight]);
 
     var yScale = d3.scale.linear()
         .domain([trackObj.elevMin, trackObj.elevMax])
-        .range([height - padding, (padding - 20)]);
+        .range([height - paddingBottom, paddingTop]);
 
     //create line function
     var line = d3.svg.line()
@@ -44,8 +63,8 @@ function makeChart(trackObj, type, timeAmt) {
     var chart = d3.select("#charts").append('svg')
         .attr('id', type)
         .attr('class', "svgChart")
-        .attr('width', width - (padding - 5))
-        .attr('height', height - (padding - 20));
+        .attr('width', width)
+        .attr('height', height);
 
     //create the clip path
     //this is what "reveals" the path
@@ -54,13 +73,13 @@ function makeChart(trackObj, type, timeAmt) {
         .append("rect")
         .attr("width", width)
         .attr("height", height)
-        .attr('x', padding - width)
+        .attr('x', paddingRight - width)
         .attr('y', 0)
         .transition()
         .delay(500)
         .duration(timeAmt || 5000)
         .ease('quad')
-        .attr('x', padding);
+        .attr('x', paddingRight);
 
     //add path
     chart.append("path")
@@ -97,25 +116,34 @@ function makeChart(trackObj, type, timeAmt) {
     //add x-axis
     chart.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(0," + (height - padding) + ")")
+        .attr("transform", "translate(0," + (height - paddingBottom) + ")")
         .call(xAxis);
 
     //add y-axis
     chart.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(" + (padding) + ",0)")
+        .attr("transform", "translate(" + (paddingLeft) + ",0)")
         .call(yAxis);
 
     //add description text for chart
     chart.append('text')
         .attr('class', 'chartDescription')
-        .attr('x', (width - padding))
-        .attr('y', padding - 10)
+        .attr('x', (width - paddingRight))
+        .attr('y', paddingTop)
+        .attr('dy', '.7em')
         .attr('text-anchor', 'end')
-        //        .attr("transform", mText)
         .text(type == "ElevVsTime" ? "Elevation Vs Time" : "Elevation Vs Distance");
-    //        .style("visibility", "hidden");
 
+    //get index of max elevation location
+    var emIndex = trackObj.elevMaxIndex;
+
+    if (type == "ElevVsTime") {
+        var ttInitX = xScale(trackObj.locations[emIndex].timeProgress);
+        var ttInitY = yScale(trackObj.locations[emIndex].elev);
+    } else {
+        var ttInitX = xScale(trackObj.locations[emIndex].currentDistVal);
+        var ttInitY = yScale(trackObj.locations[emIndex].elev);
+    }
 
     //add "tooltip" line
     var ttLine = chart.append('line')
@@ -124,9 +152,9 @@ function makeChart(trackObj, type, timeAmt) {
         .attr('fill', 'none')
         .style("visibility", "hidden");
 
-    //add marker for tooltip
+    //add circle marker for tooltip
     var marker = chart.append('circle')
-        .attr('r', 5)
+        .attr('r', 4)
         .attr('fill', 'red')
         .style("visibility", "hidden");
 
@@ -135,19 +163,19 @@ function makeChart(trackObj, type, timeAmt) {
         .attr("id", "markerText")
         .style("visibility", "hidden");
 
-
-    //bisector function returns index of where something would go in array
-    //using it to lookup position in locaitns array and get y/elev value
-    var bisectXaxis = d3.bisector(function (d) {
-        return (type == "ElevVsTime" ? d.timeProgress : d.currentDistVal);
-    }).left;
-
     //add "empty" rect for mouseover/tooltip
     chart.append("rect")
         .attr("fill-opacity", 0)
         .attr("width", width)
         .attr("height", height)
+        //HANDLE MOUSEOVER
         .on("mousemove", function () {
+
+            //bisector functions return index of where something would go in array
+            //using it to lookup position in locations array
+            var bisectXaxis = d3.bisector(function (d) {
+                return (type == "ElevVsTime" ? d.timeProgress : d.currentDistVal);
+            }).left;
 
             //convert mouse x back to trackobj number
             var newX = xScale.invert(d3.mouse(this)[0]);
@@ -160,41 +188,38 @@ function makeChart(trackObj, type, timeAmt) {
             var mouseY = d3.mouse(this)[1];
 
             //establish bounds for tooltip display
-            if (mouseX >= padding &&
-                mouseX <= width - (padding + 1) &&
-                mouseY >= padding - 15 &&
-                mouseY <= height - padding) {
-
-                //position tooltip text
-                //shifted right when on left side of chart
-                //shifted left when on right side of chart
-                var mTextCalc = ((mouseX / -12.98));
-                var mText = "translate(" + mTextCalc + ",-10)";
+            if (mouseX >= paddingLeft &&
+                mouseX <= width - paddingRight &&
+                mouseY >= paddingTop &&
+                mouseY <= height - paddingBottom) {
 
                 //modify vert line
-                ttLine.style("visibility", "visible");
-                ttLine.attr('x1', d3.mouse(this)[0]);
-                ttLine.attr('x2', d3.mouse(this)[0]);
-                ttLine.attr('y1', yScale(trackObj.locations[index].elev));
-                ttLine.attr('y2', height - padding);
+                ttLine.attr('x1', d3.mouse(this)[0])
+                    .attr('x2', d3.mouse(this)[0])
+                    .attr('y1', yScale(trackObj.locations[index].elev))
+                    .attr('y2', height - paddingBottom);
 
-                //modify the square
-                marker.style("visibility", "visible");
-                marker.attr('cx', d3.mouse(this)[0]);
-                marker.attr('cy', yScale(trackObj.locations[index].elev));
+                //modify the circle
+                marker.attr('cx', d3.mouse(this)[0])
+                    .attr('cy', yScale(trackObj.locations[index].elev));
+
+                //setup to position tooltip text
+                //shifted right when on left side of chart
+                //shifted left when on right side of chart
+                var ttTextCalc = ((mouseX / ttipFactor));
+                var ttTextTransform = "translate(" + ttTextCalc + ",-10)";
 
                 //modify the text
-                markerText.style("visibility", "visible");
-                markerText.attr('x', d3.mouse(this)[0]);
-                markerText.attr('y', yScale(trackObj.locations[index].elev));
-                markerText.attr("transform", mText);
-                markerText.text(trackObj.locations[index].elev.toFixed(0) + "ft");
+                markerText.attr('x', d3.mouse(this)[0])
+                    .attr('y', yScale(trackObj.locations[index].elev))
+                    .attr("transform", ttTextTransform)
+                    .text(trackObj.locations[index].elev.toFixed(0) + "ft");
             }
         });
 
 
     //BEGIN SVG--PNG TRANSFORMATION
-    //only run this using elevation vs distance
+    //only run this code when rendering elevation vs distance
     if (type == "ElevVsDist") {
 
         d3.select("#ElevVsDist")
@@ -224,7 +249,7 @@ function makeChart(trackObj, type, timeAmt) {
         var image = new Image;
         image.src = svg_xml_img_src;
         image.onload = function () {
-            context.drawImage(image, 0, 0);
+            context.drawImage(image, -1 * (paddingLeft / 2), 0);
 
             //encode img data as png
             var canvasdata = canvas.toDataURL("image/png");
@@ -234,4 +259,22 @@ function makeChart(trackObj, type, timeAmt) {
 
         };
     }
+
+    setTimeout(function () {
+        ttLine.style("visibility", "visible")
+            .attr('x1', ttInitX)
+            .attr('x2', ttInitX)
+            .attr('y1', ttInitY)
+            .attr('y2', height - paddingBottom);
+        
+        marker.style("visibility", "visible")
+            .attr('cx', ttInitX)
+            .attr('cy', ttInitY);
+        
+        markerText.style("visibility", "visible")
+            .attr('x', ttInitX)
+            .attr('y', ttInitY)
+            .attr("transform", 'translate(' + (ttInitX / ttipFactor) + ', -10)')
+            .text(trackObj.locations[emIndex].elev.toFixed(0) + "ft");
+    }, timeAmt + 1000)
 }

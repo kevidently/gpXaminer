@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Shojumaru')
-
-/*@import url(https://fonts.googleapis.com/css?family=Antic)*/
-
 @import url('https://fonts.googleapis.com/css?family=Delius')
+@import url('https://fonts.googleapis.com/css?family=Neucha');
     
 fontHeadings = 'Shojumaru', cursive
 fontContent = 'Delius', cursive
+fontChart = 'Neucha', cursive
+
 
 /*BODY AND GLOBAL STYLES*/
 body
@@ -185,7 +185,7 @@ a
 
 /*GALLERY PAGE*/
 #viewTrackDescript
-    font-size 1.3em
+    font 1.3em fontHeadings
     margin 1.5em 0 0 0
 
 .galTrackDescript
@@ -223,21 +223,17 @@ svg
     display block
     margin 1em auto 0 auto
 
-.axis path,
-.axis line
+.axis path, .axis line
     fill none
     stroke white
     shape-rendering crispEdges
 
-.axis
-    text
-        font-family sans-serif
-        font-size 0.8em
-        fill white
+.axis text
+    font 1.2em fontChart
+    fill white
 
 .chartDescription, #markerText
-    font-family sans-serif
-    font-size 1.1em
+    font 1.4em fontChart
     fill white
 
 #pngoutput
@@ -248,13 +244,11 @@ svg
 /*MEDIA QUERIES*/
 @media screen and (max-width: 1200px)
     .axis text
-        font-family sans-serif
-        font-size 0.7em
+        font 1em fontChart
         fill white
 
     .chartDescription, #markerText
-        font-family sans-serif
-        font-size 1em
+        font 1.2em fontChart
         fill white
     
     #bgFilter
@@ -283,13 +277,11 @@ svg
 
 @media screen and (max-width: 768px)
     .axis text
-        font-family sans-serif
-        font-size 0.6em
+        font 0.7em fontChart
         fill white
 
     .chartDescription, #markerText
-        font-family sans-serif
-        font-size 0.9em
+        font 1em fontChart
         fill white
     
     #bgFilter
