@@ -177,7 +177,6 @@ Meteor.methods({
             if (trackData.locations[i].elev > trackData.elevMax) {
                 trackData.elevMax = trackData.locations[i].elev;
                 trackData.elevMaxIndex = i;
-                console.log(trackData.elevMaxIndex);
             }
 
             //find min elev -- for axis domain

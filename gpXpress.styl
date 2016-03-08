@@ -145,8 +145,6 @@ a
     -webkit-touch-callout none
     &:hover
         background-color rgba(251, 201, 1, 0.1)
-        
-//#uploadBtnHolder:hover
 
 #uploadText
     position relative
@@ -190,13 +188,12 @@ a
 
 .galTrackDescript
     font 1.2em fontHeadings
-//    font-size 1.3em
 
 .galleryImg
     width 300px
 
 .galleryImgContainer
-    display inline-block
+    float left
     border 2px solid white
     border-radius 20px
     margin 8px
@@ -204,10 +201,6 @@ a
     &:hover
         border 2px solid #fbc901
         background-color rgba(40, 40, 40, 0.3)
-        
-
-//.galleryImgContainer:hover
-
 
 #galleryImgHolder
     margin 0 auto
@@ -244,6 +237,10 @@ svg
 
 /*MEDIA QUERIES*/
 @media screen and (max-width: 1200px)
+    .galleryImgContainer
+        float none
+        display inline-block 
+
     .axis text
         font 1em fontChart
         fill white
