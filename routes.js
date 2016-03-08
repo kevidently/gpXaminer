@@ -2,19 +2,13 @@
 Router.route('/', {
     name: 'about',
     template: 'about',
-
     waitOn: function () {
         return Meteor.subscribe('tracks');
     },
-    action: function () {
-        
-        if (this.ready) {
-            console.log(this);
-            
-            
+    action: function () {        
+        if (this.ready) {            
             this.render('about', {
                 data: function () {
-//                    console.log("All headers "+this);
                     var trackId = "09edac606e4bca27c98ac957404d9b10";
                     var trackObj = Tracks.findOne(trackId);
                     return trackObj;

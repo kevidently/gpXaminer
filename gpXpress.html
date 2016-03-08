@@ -34,7 +34,7 @@
     </div>
     
     <div class="contentHolder" id="uploadContent"> 
-        <p class="pContent">When you use a GPS app to record a track, the app continously logs data about your journey, such as latitude, longitude, elevation, and time. The data looks like this:</p>
+        <p class="pContent">When you use a GPS app to record a track, the app continously logs data about your journey, such as latitude, longitude, elevation, and time.  You can export your GPS data as a GPX file, which looks like this:</p>
 
         <div id="codeBlock">
             &lt;<span class="codeTag">trkpt</span> <span class="codeAttr">lat</span>="40.2205096" <span class="codeAttr">lon</span>="-105.5437759"&gt;
@@ -54,7 +54,7 @@
             &lt;<span class="codeTag">/trkpt</span>&gt;
         </div>
 
-        <p class="pContent">Your GPS app can (usually) export this data as a GPX file (which is basically just an XML file). <span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
+        <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> takes data from a GPX file and generates two separate line graphs. The first graph displays data in terms of "Elevation vs. Time", while the second graph displays "Elevation vs. Distance".</p>
     </div>   
 
 </template>
@@ -67,11 +67,11 @@
 <template name="about">
     {{>charts}}
     <div class="contentHolder" id="aboutContent">       
-        <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> is a web application for visualizing GPS data. If you've ever wanted to view the elevation profile of a hike or a bike ride (or any activity), this app is for you.</p>
+        <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> is a web application for visualizing GPS data. If you've ever wanted to view the elevation profile of a hike or a bike ride (etc), this app is for you.</p>
 
         <p class="pContent">Go to the <a class="contentLink" href="{{pathFor route='upload'}}">upload</a> page to generate graphs from your GPX file.  After your file has been processed, the track data will be recorded and preserved in the <a class="contentLink" href="{{pathFor route='gallery'}}">gallery</a>, where you can view additional GPX graphs.</p>
 
-        <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> was created by Kevin Hoffman using mostly Meteor.js and D3.js. Please visit my personal <a class="contentLink" href="http://kevidently.me" target="_blank">website</a> for more info about me.</p>
+        <p class="pContent"><span id="smallCap">GP<span id="midX">X</span>PRESS</span> was created by Kevin Hoffman using Meteor.js and D3.js. Please visit my personal <a class="contentLink" href="http://kevidently.me" target="_blank">website</a> for more info about me.</p>
     </div>
 </template>
 
