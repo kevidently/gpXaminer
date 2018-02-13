@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	Tracks.remove({});
+	//Tracks.remove({});
 	if (Tracks.find().count() === 0) {
 		console.log("Tracks collection is empty");
 	}
